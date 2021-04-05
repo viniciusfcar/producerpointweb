@@ -17,17 +17,14 @@ const Login = () => {
 
     const entrar = async () => {
         console.log('aqui')
-        const form = new FormData()
-        form.append('email', email)
-        form.append('password', password)
-
-        const request = await fetch('https://producersapi.herokuapp.com/api/signin', {
+        const body = {email: email, password: password}
+        //https://producersapi.herokuapp.com/api/signin
+        const request = await fetch('http://localhost/api/signin', {
             method: 'POST',
-            body: form
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
         })
-
-        const response = await request.json()
-
+        const response = request.json()
         console.log(response)
     }
 
