@@ -1,11 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import './Login.css';
 import logo from '../../imagens/logo.png';
+import { useHistory } from "react-router-dom";
 
-const Login = () => {
+function Login() {
     
+    const history = useHistory();
+
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [usuario, setUsuario] = useState();
+    const [show, setShow] = useState(false);
+    const [title, setTitle] = useState('');
+    const [body, setBody] = useState('');
 
     const on_email = (evento) => {
         setEmail(evento.target.value);
@@ -15,31 +22,49 @@ const Login = () => {
         setPassword(evento.target.value);
     }
 
-    const entrar = async () => {
-        console.log('aqui')
-        const body = {email: email, password: password}
-        //https://producersapi.herokuapp.com/api/signin
-        const request = await fetch('http://localhost/api/signin', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        })
-        const response = request.json()
-        console.log(response)
+    const onSubmit = async () => {
+        if(email == null || password == null) {
+            setTitle('Erro de Preenchimento');
+            setBody('Preencha os campos de E-mail e Senha.');
+            setShow(true);
+        
+        } else {
+            const body = {email: email, password: password}
+            const request = await fetch('https://apiproducers.serviceapp.net.br/api/signin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            })
+            
+            const response = await request.json()
+
+            if(response != null){
+                setUsuario(response);
+                console.log('aqui');
+                history.push('/home');
+                
+            } else {
+                setTitle('Dados Inválidos');
+                setBody('E-mail e/ou Senha inválidos, tente novamente.');
+                setShow(true);
+            } 
+        }        
     }
 
     return(
-        <header className="header">
-            <img src={logo} className="logo" alt="logo"/>
-            <h2 className="title">ProducerPoint</h2>
-            <div>
-                <input className="input" type="text" onChange={on_email} placeholder="E-mail" />
-            </div>
-            <div>
-                <input className="input" type="password" onChange={on_password} placeholder="Senha" />
-            </div>
-            <button className="button" onClick={entrar}>Entrar</button>
-        </header>
+        <>
+            <header className="header">
+                <img src={logo} className="logo" alt="logo"/>
+                <h2 className="title">ProducerPoint</h2>
+                <div>
+                    <input className="input" type="text" onChange={on_email} placeholder="E-mail" />
+                </div>
+                <div>
+                    <input className="input" type="password" onChange={on_password} placeholder="Senha" />
+                </div>
+                <button className="button" onClick={onSubmit}>Entrar</button>
+            </header>
+        </>
     )
 }
 
