@@ -1,6 +1,8 @@
 import React from 'react';
 import Navbar from '../../components/NavBar/Navbar.js';
 
+import './CadastroProducer.css';
+
 function CadastroProducer() {
 
     return(

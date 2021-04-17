@@ -1,15 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import './Login.css';
 import logo from '../../imagens/logo.png';
 import { useHistory } from "react-router-dom";
+import {AuthContext} from '../Context/Context';
 
 function Login() {
     
     const history = useHistory();
 
+    const { setUsuario } = useContext(AuthContext);
+
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [usuario, setUsuario] = useState();
     const [show, setShow] = useState(false);
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
@@ -40,7 +42,6 @@ function Login() {
 
             if(response != null){
                 setUsuario(response);
-                console.log('aqui');
                 history.push('/home');
                 
             } else {
