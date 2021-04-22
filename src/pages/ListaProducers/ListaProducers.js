@@ -24,8 +24,12 @@ function ListaProducers(params) {
     return(
         <>
             <Navbar/>
+            <nav class="navbar" style={{marginTop: 10, backgroundColor: 'lightgray'}}>
+                <div class="container-fluid" style={{alignItems: 'center', justifyContent: 'space-around'}}>
+                    <h3>Lista dos Produtores</h3>
+                </div>
+            </nav>
             <div className="container">
-                <h2>Lista de Produtores</h2>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">

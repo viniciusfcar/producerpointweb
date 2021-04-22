@@ -1,35 +1,27 @@
 import React, {useEffect, useState, useContext} from 'react';
-import { useHistory } from "react-router-dom";
+
+import './Navbar.css';
 
 const Navbar = () => {
 
-    const history = useHistory();
-
-    const Home = () => {
-        history.push('/home');
-    }
-
-    const Cadastro = () => {
-        history.push('/cadastro-producer');
-    }
-
-    const Lista = () => {
-        history.push('/lista-producers');
-    }
     return(
         <>
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a href="/home" class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
-                    <a href="/cadastro-producer" class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
-                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
+            <nav class="navbar navbar-expand-lg navbar-light" style={{backgroundColor: 'green'}}>
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#" style={{color: 'orange'}}>ProducerPoint</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="/Home" style={{color: 'orange'}}>Home</a>
+                        <a class="nav-link" href="/cadastro-producer" style={{color: 'orange'}}>Cadastro Produtor</a>
+                        <a class="nav-link" href="/lista-producers" style={{color: 'orange'}}>Listar Produtores</a>
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true" style={{color: 'orange'}}>Sair</a>
+                    </div>
+                    </div>
                 </div>
             </nav>
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"></div>
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"></div>
-                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab"></div>
-            </div>
         </> 
     );
 }

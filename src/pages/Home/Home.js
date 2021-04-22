@@ -8,9 +8,11 @@ function Home() {
     return(
         <> 
             <Navbar/> 
-            <div className="container">
-                <h1>Seja Bem-Vindo(a) ao ProducerPoint</h1>
-            </div>
+            <nav class="navbar" style={{marginTop: 10, backgroundColor: 'lightgray'}}>
+                <div class="container-fluid" style={{alignItems: 'center', justifyContent: 'space-around'}}>
+                    <h3>Seja bem-bindo ao ProducerPoint</h3>
+                </div>
+            </nav>
         </>
     );
 }
