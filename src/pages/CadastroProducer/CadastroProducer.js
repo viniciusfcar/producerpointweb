@@ -1,9 +1,51 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Navbar from '../../components/NavBar/Navbar.js';
 
 import './CadastroProducer.css';
 
 function CadastroProducer() {
+
+    const [products, setProducts] = useState([]);
+    const [activities, setActivities] = useState([]);
+    const [activity, setActivity] = useState([]);
+    const [productsSelect, setProductsSelect] = useState([]);
+
+    const getProducts = async () => {
+        const request = await fetch('https://apiproducers.serviceapp.net.br/api/products', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        
+        const response = await request.json();
+
+        setProducts(response);
+    }
+
+    const getFarmingActivities = async () => {
+        const request = await fetch('https://apiproducers.serviceapp.net.br/api/farming-activities', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        
+        const response = await request.json();
+
+        setActivities(response);
+    }
+
+    const handleChange = (event) => {
+        setActivity(event.target.value);
+    }
+
+    const handleInput = (event) => {
+        setProductsSelect(...productsSelect, event.target.value);
+
+        console.log(productsSelect);
+    }
+
+    useEffect(() => {
+        getProducts();
+        getFarmingActivities();
+    }, [])
 
     return(
         <>
@@ -78,18 +120,22 @@ function CadastroProducer() {
                     </div>
                     <div class="col-4">
                         <label for="inputState" class="form-label">Atividade Agrícola</label>
-                        <select id="inputState" class="form-select">
+                        <select id="inputState" class="form-select" onChange={handleChange}>
                             <option selected>Selecione</option>
-                            <option>...</option>
+                            {activities.map((activity) => (
+                                <option key={activity.id}>{activity.activityName}</option>
+                            ))}
                         </select>
                     </div>
                     <label for="inputState" class="form-label">Produtos</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"/>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Leite
-                        </label>
-                    </div>
+                    {products.map((product) => (
+                        <div class="form-check">
+                            <input key={product.id} class="form-check-input" type="checkbox" value={product.id} onChange={handleInput} id="flexCheckChecked"/>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                {product.label}
+                            </label>
+                        </div>
+                    ))}
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary">Cadastrar</button>
                     </div>
