@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Table } from 'react-bootstrap';
 import Navbar from '../../components/NavBar/Navbar.js';
+const FilterableTable = require('react-filterable-table');
 
 function ListaProducers(params) {
     
@@ -34,40 +35,29 @@ function ListaProducers(params) {
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    {producers.map((producer) => (                               
-                                        <Table key={producer.id}>
-                                            <thead>
-                                                <tr>
-                                                    <th>Nome</th>
-                                                    <th>CPF</th>
-                                                    <th>E-mail</th>
-                                                    <th>Telefone</th>
-                                                    <th>Rua</th>
-                                                    <th>Número</th>
-                                                    <th>Complemento</th>
-                                                    <th>Bairro</th>
-                                                    <th>Cidade</th>
-                                                    <th>UF</th>
-                                                    <th>CEP</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <td>{producer.name}</td>
-                                                <td>{producer.cpf}</td>
-                                                <td>{producer.email}</td>
-                                                <td>{producer.phone}</td>
-                                                <td>{producer.address.street}</td>
-                                                <td>{producer.address.houseNumber}</td>
-                                                <td>{producer.address.reference}</td>
-                                                <td>{producer.address.district}</td>
-                                                <td>{producer.address.city}</td>
-                                                <td>{producer.address.uf}</td>
-                                                <td>{producer.address.zipCode}</td>
-                                            </tbody>
-                                        </Table>
-                                    ))}
-                                </div>
+                                <h3>Filtrar</h3>
+                                <FilterableTable
+                                    namespace="People"
+                                    initialSort="name"
+                                    data={producers}
+                                    fields={
+                                        [
+                                            { name: 'name', displayName: "Nome", inputFilterable: true, sortable: true },
+                                            { name: 'cpf', displayName: "CPF", inputFilterable: true, exactFilterable: true, sortable: true },
+                                            { name: 'email', displayName: "E-mail", inputFilterable: true, exactFilterable: true, sortable: true },
+                                            { name: 'phone', displayName: "Telefone", inputFilterable: true, exactFilterable: true, sortable: true },
+                                            { name: 'address.street', displayName: "Logradouro", inputFilterable: true, exactFilterable: true, sortable: true },
+                                            { name: 'address.houseNumber', displayName: "Número", inputFilterable: true, exactFilterable: true, sortable: true },
+                                            { name: 'address.reference', displayName: "Complemento", inputFilterable: true, exactFilterable: true, sortable: true },
+                                            { name: 'address.district', displayName: "Bairro", inputFilterable: true, exactFilterable: true, sortable: true },
+                                            { name: 'address.city', displayName: "Cidade", inputFilterable: true, exactFilterable: true, sortable: true },
+                                            { name: 'address.uf', displayName: "Estado", inputFilterable: true, exactFilterable: true, sortable: true },
+                                            { name: 'address.zipCode', displayName: "CEP", inputFilterable: true, exactFilterable: true, sortable: true }
+                                        ]
+                                    }
+                                    noRecordsMessage={<h3 style={{color : 'red'}}>Nenhum item para exibir!</h3>}
+                                    noFilteredRecordsMessage={<h3 style={{color : 'red'}}>Nenhum resultado para este filtro!</h3>}
+                                />
                             </div>
                         </div>
                     </div>
