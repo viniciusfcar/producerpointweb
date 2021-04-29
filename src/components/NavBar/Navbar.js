@@ -15,8 +15,26 @@ const Navbar = () => {
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <a class="nav-link active" aria-current="page" href="/Home" style={{color: 'orange'}}>Home</a>
-                        <a class="nav-link" href="/cadastro-producer" style={{color: 'orange'}}>Cadastro Produtor</a>
-                        <a class="nav-link" href="/lista-producers" style={{color: 'orange'}}>Listar Produtores</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" style={{color: 'orange'}} href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Cadastro
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="/cadastro-producer">Produtor</a></li>
+                                <li><a class="dropdown-item" href="/cadastro-farming-activity">Atividade Agrícola</a></li>
+                                <li><a class="dropdown-item" href="/cadastro-product">Produto</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" style={{color: 'orange'}} href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Listar
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="/lista-producers">Produtores</a></li>
+                                <li><a class="dropdown-item" href="/lista-farming-activities">Atividades Agrícolas</a></li>
+                                <li><a class="dropdown-item" href="/lista-products">Produtos</a></li>
+                            </ul>
+                        </li>
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true" style={{color: 'orange'}}>Sair</a>
                     </div>
                     </div>

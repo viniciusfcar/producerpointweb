@@ -58,10 +58,10 @@ function Login() {
                 <img src={logo} className="logo" alt="logo"/>
                 <h2 className="title">ProducerPoint</h2>
                 <div>
-                    <input className="input" type="text" onChange={on_email} placeholder="E-mail" />
+                    <input className="input" type="text" onChange={on_email} placeholder="E-mail" required/>
                 </div>
                 <div>
-                    <input className="input" type="password" onChange={on_password} placeholder="Senha" />
+                    <input className="input" type="password" onChange={on_password} placeholder="Senha" required/>
                 </div>
                 <button className="button" onClick={onSubmit}>Entrar</button>
             </header>
