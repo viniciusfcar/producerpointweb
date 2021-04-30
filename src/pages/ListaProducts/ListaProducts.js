@@ -8,6 +8,10 @@ function ListaProducts(params) {
     const [products, setProducts] = useState([]);
     const [andress, setAndress] = useState([]);
 
+    const geraLink = (product) => {
+        return <a href={"/cadastro-product/"+product.value}>editar</a>
+    }
+
     const getProducts = async () => {
         const request = await fetch('https://apiproducers.serviceapp.net.br/api/products', {
             method: 'GET',
@@ -15,6 +19,9 @@ function ListaProducts(params) {
         })
         
         const response = await request.json();
+        response.map(function (p) {
+            p.links=geraLink(p)
+        })
         setProducts(response);
     }
 
@@ -42,7 +49,9 @@ function ListaProducts(params) {
                                     data={products}
                                     fields={
                                         [
+                                            { name: 'value', displayName: "ID#", inputFilterable: true, sortable: true },
                                             { name: 'label', displayName: "Nome", inputFilterable: true, sortable: true },
+                                            { name: 'links', displayName: "Links", inputFilterable: false, sortable: false },
                                         ]
                                     }
                                     noRecordsMessage={<h3 style={{color : 'red'}}>Nenhum item para exibir!</h3>}

@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, useParams } from "react-router-dom";
 
 import App from '../src/App';
 import Home from '../src/pages/Home/Home';
@@ -13,8 +13,6 @@ import CadastroFarmingActivity from '../src/pages/CadastroFarmingActivity/Cadast
 import ListaFarmingActivities from '../src/pages/ListaFarmingActivities/ListaFarmingActivities';
 
 export default function Routes() {
-
-
   return (
     <Router>
       <Switch>
@@ -23,7 +21,8 @@ export default function Routes() {
           <RoutesPrivate path="/home" component={Home} />
           <RoutesPrivate path="/cadastro-producer" component={CadastroProducer} />
           <RoutesPrivate path="/lista-producers" component={ListaProducers} />
-          <RoutesPrivate path="/cadastro-product" component={CadastroProduct} />
+          <RoutesPrivate path="/cadastro-product" exact component={CadastroProduct} />
+          <RoutesPrivate path="/cadastro-product/:id" exact children={<CadastroProduct />} />
           <RoutesPrivate path="/lista-products" component={ListaProducts} />
           <RoutesPrivate path="/cadastro-farming-activity" component={CadastroFarmingActivity} />
           <RoutesPrivate path="/lista-farming-activities" component={ListaFarmingActivities} />

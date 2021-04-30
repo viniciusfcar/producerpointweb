@@ -1,15 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Navbar from '../../components/NavBar/Navbar.js';
 import Modal from 'react-modal';
-
+import { useParams } from "react-router-dom";
 import './CadastroProduct.css';
 
 function CadastroProduct() {
-
-    const [label, setLabel] = useState('');
-    const [modal, setModal] = useState(false);
-    const [msgModal, setMsgModal] = useState('');
-
+    let { id } = useParams();
+    console.log (id)
     const customStyles = {
         content : {
           top                   : '30%',
@@ -21,6 +18,24 @@ function CadastroProduct() {
         }
     };
 
+    const [value, setValue] = useState(null);
+    const [label, setLabel] = useState('');
+    const [modal, setModal] = useState(false);
+    const [msgModal, setMsgModal] = useState('');
+
+    const getProduct = async (id) => {
+        const request = await fetch('https://apiproducers.serviceapp.net.br/api/products/'+id)
+        const response = await request.json();  
+        setValue(response.value);
+        setLabel(response.label);
+    }
+    
+    useEffect(() => {
+        if(id > 0) {
+            getProduct(id);
+        } 
+    }, [])
+
     const onLabel = (evento) => {
         setLabel(evento.target.value);
     }
@@ -29,9 +44,20 @@ function CadastroProduct() {
         setModal(false);
     }
 
+    const validaForm = () => {
+        if(label == "" ) {
+            setMsgModal("Nome do produto é de preenchimento obrigatório!");
+            setModal(true);
+        } else {
+            onCadastroProduto();
+        }
+    }
+
     const onCadastroProduto = async () => {
         
         const body = {label: label}
+        if(id>0){body.value=id}
+        console.log(JSON.stringify(body))
         const request = await fetch('https://apiproducers.serviceapp.net.br/api/products', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -73,11 +99,15 @@ function CadastroProduct() {
             <div className="container">
                 <div class="row g-3">
                     <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">ID</label>
+                        <span type="text" class="form-control" id="id">{value}</span>
+                    </div>
+                    <div class="col-md-6">
                         <label for="inputEmail4" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="nome" onChange={onLabel} required />
+                        <input type="text" class="form-control" id="nome" value={label} onChange={onLabel} required />
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary" onClick={onCadastroProduto}>Cadastrar</button>
+                        <button type="submit" class="btn btn-primary" onClick={validaForm}>Cadastrar</button>
                     </div>
                 </div>
             </div>
