@@ -8,6 +8,10 @@ function ListaProducers(params) {
     const [producers, setProducers] = useState([]);
     const [andress, setAndress] = useState([]);
 
+    const geraLink = (producer) => {
+        return <a href={"/cadastro-producer/"+producer.id}>editar</a>
+    }
+
     const getProducers = async () => {
         const request = await fetch('https://apiproducers.serviceapp.net.br/api/producers', {
             method: 'GET',
@@ -15,6 +19,9 @@ function ListaProducers(params) {
         })
         
         const response = await request.json();
+        response.map(function (p) {
+            p.links=geraLink(p)
+        })
         setProducers(response);
     }
 
@@ -52,7 +59,8 @@ function ListaProducers(params) {
                                             { name: 'address.district', displayName: "Bairro", inputFilterable: true, exactFilterable: true, sortable: true },
                                             { name: 'address.city', displayName: "Cidade", inputFilterable: true, exactFilterable: true, sortable: true },
                                             { name: 'address.uf', displayName: "Estado", inputFilterable: true, exactFilterable: true, sortable: true },
-                                            { name: 'address.zipCode', displayName: "CEP", inputFilterable: true, exactFilterable: true, sortable: true }
+                                            { name: 'address.zipCode', displayName: "CEP", inputFilterable: true, exactFilterable: true, sortable: true },
+                                            { name: 'links', displayName: "Links", inputFilterable: false, sortable: false },
                                         ]
                                     }
                                     noRecordsMessage={<h3 style={{color : 'red'}}>Nenhum item para exibir!</h3>}

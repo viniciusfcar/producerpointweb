@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import { Table } from 'react-bootstrap';
 import Navbar from '../../components/NavBar/Navbar.js';
 const FilterableTable = require('react-filterable-table');
 

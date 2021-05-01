@@ -7,6 +7,10 @@ function ListaFarmingActivities(params) {
     const [activities, setActivities] = useState([]);
     const [andress, setAndress] = useState([]);
 
+    const geraLink = (activity) => {
+        return <a href={"/cadastro-farming-activity/"+activity.id}>editar</a>
+    }
+
     const getActivities = async () => {
         const request = await fetch('https://apiproducers.serviceapp.net.br/api/farming-activities', {
             method: 'GET',
@@ -14,6 +18,9 @@ function ListaFarmingActivities(params) {
         })
         
         const response = await request.json();
+        response.map(function (a) {
+            a.links=geraLink(a)
+        })
         setActivities(response);
     }
 
@@ -44,7 +51,8 @@ function ListaFarmingActivities(params) {
                                             { name: 'activityName', displayName: "Nome", inputFilterable: true, sortable: true },
                                             { name: 'period', displayName: "Período", inputFilterable: true, sortable: true },
                                             { name: 'averageCash', displayName: "Ganho Médio", inputFilterable: true, sortable: true },
-                                        ]
+                                            { name: 'links', displayName: "Links", inputFilterable: false, sortable: false },
+                                       ]
                                     }
                                     noRecordsMessage={<h3 style={{color : 'red'}}>Nenhum item para exibir!</h3>}
                                     noFilteredRecordsMessage={<h3 style={{color : 'red'}}>Nenhum resultado para este filtro!</h3>}

@@ -1,14 +1,48 @@
 import React, {useEffect, useState} from 'react';
 import Navbar from '../../components/NavBar/Navbar.js';
-
+import Modal from 'react-modal';
+import { useParams } from "react-router-dom";
 import './CadastroProducer.css';
 
 function CadastroProducer() {
-
+    let { id } = useParams();
+    const [name, setName] = useState("");
+    const [nickname, setNickname] = useState("");
+    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
+    const [cpf, setCpf] = useState("");
+    const [status, setStatus] = useState("");
+    const [role, setRole] = useState("");
+    const [birthDate, setBirthDate] = useState("");
+    const [address, setAddress] = useState({});
     const [products, setProducts] = useState([]);
     const [activities, setActivities] = useState([]);
     const [activity, setActivity] = useState([]);
-    const [productsSelect, setProductsSelect] = useState([]);
+    const [productList, setProductList] = useState([]);
+
+    const getProducer = async (id) => {
+        const request = await fetch('https://apiproducers.serviceapp.net.br/api/producers/'+id)
+        const response = await request.json();  
+        setName(response.name);
+        setNickname(response.nickname);
+        setPhone(response.phone);
+        setEmail(response.email);
+        setCpf(response.cpf);
+        setStatus(response.status);
+        setRole(response.role);
+        setBirthDate(response.birthDate);
+        setAddress(response.address);
+        setProducts(response.products);
+        setActivity(response.farmingActivity);
+    }
+    
+    useEffect(() => {
+        if(id > 0) {
+            getProducer(id);
+        } 
+        getProducts();
+        getFarmingActivities();
+    }, [])
 
     const getProducts = async () => {
         const request = await fetch('https://apiproducers.serviceapp.net.br/api/products', {
@@ -18,7 +52,7 @@ function CadastroProducer() {
         
         const response = await request.json();
 
-        setProducts(response);
+        setProductList(response);
     }
 
     const getFarmingActivities = async () => {
@@ -32,20 +66,19 @@ function CadastroProducer() {
         setActivities(response);
     }
 
+    const onChange= (event) =>{
+
+    }
+
     const handleChange = (event) => {
         setActivity(event.target.value);
     }
 
     const handleInput = (event) => {
-        setProductsSelect(...productsSelect, event.target.value);
+        setProducts(...products, event.target.value);
 
-        console.log(productsSelect);
+        console.log(products);
     }
-
-    useEffect(() => {
-        getProducts();
-        getFarmingActivities();
-    }, [])
 
     return(
         <>
@@ -58,63 +91,63 @@ function CadastroProducer() {
             <div className="container">
                 <form class="row g-3">
                     <div class="col-md-6">
-                        <label for="inputEmail4" class="form-label">Nick Name</label>
-                        <input type="email" class="form-control" id="inputEmail4"/>
+                        <label for="nickname" class="form-label">Nick Name</label>
+                        <input type="email" class="form-control" id="nickname" onChange={function (event) {setNickname(event.target.value)}} value={nickname}/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="inputPassword4"/>
+                        <input type="password" class="form-control" id="password"/>
                     </div>
                     <div class="col-12">
-                        <label for="inputAddress" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="inputAddress" placeholder="Ex: João de Oliveira"/>
+                        <label for="password" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="kame" placeholder="Ex: João de Oliveira" onChange={function (event) {setName(event.target.value)}} value={name}/>
                     </div>
                     <div class="col-12">
-                        <label for="inputAddress2" class="form-label">E-mail</label>
-                        <input type="text" class="form-control" id="inputAddress2" placeholder="Ex: joao@gmail.com"/>
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" class="form-control" id="email" placeholder="Ex: joao@gmail.com" onChange={function (event) {setEmail(event.target.value)}} value={email}/>
                     </div>
                     <div class="col-md-2">
-                        <label for="inputZip" class="form-label">Telefone</label>
-                        <input type="text" class="form-control" id="inputZip"/>
+                        <label for="phone" class="form-label">Telefone</label>
+                        <input type="text" class="form-control" id="phone" onChange={function (event) {setPhone(event.target.value)}} value={phone}/>
                     </div>
                     <div class="col-md-2">
-                        <label for="inputZip" class="form-label">CPF</label>
-                        <input type="text" class="form-control" id="inputZip"/>
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="cpf" onChange={function (event) {setCpf(event.target.value)}} value={cpf}/>
                     </div>
                     <div class="col-md-2">
-                        <label for="inputZip" class="form-label">Data de Nascimento</label>
-                        <input type="date" class="form-control" id="inputZip"/>
+                        <label for="birthDate" class="form-label">Data de Nascimento</label>
+                        <input type="date" class="form-control" id="birthDate" onChange={function (event) {setBirthDate(event.target.value)}} value={birthDate}/>
                     </div>
                     <div class="row g-2">
                         <div class="col-md-2">
-                            <label for="inputZip" class="form-label">CEP</label>
-                            <input type="text" class="form-control" id="inputZip"/>
+                            <label for="zipCode" class="form-label">CEP</label>
+                            <input type="text" class="form-control" id="zipCode" onChange={function (event) {var a  = address; a.zipCode = event.target.value; setAddress(a)}} value={address.zipCode}/>
                         </div>
                         <div class="col-md-6">
-                            <label for="inputCity" class="form-label">Logradouro</label>
-                            <input type="text" class="form-control" id="inputCity"/>
+                            <label for="street" class="form-label">Logradouro</label>
+                            <input type="text" class="form-control" id="street" value={address.street}/>
                         </div>
                         <div class="col-md-2">
-                            <label for="inputZip" class="form-label">Número</label>
-                            <input type="text" class="form-control" id="inputZip"/>
+                            <label for="houseNumber" class="form-label">Número</label>
+                            <input type="text" class="form-control" id="houseNumber" value={address.houseNumber}/>
                         </div>
                         <div class="col-md-6">
-                            <label for="inputZip" class="form-label">Complemento</label>
-                            <input type="text" class="form-control" id="inputZip"/>
+                            <label for="reference" class="form-label">Complemento</label>
+                            <input type="text" class="form-control" id="reference" value={address.reference}/>
                         </div>
                         <div class="col-md-6">
-                            <label for="inputCity" class="form-label">Bairro</label>
-                            <input type="text" class="form-control" id="inputCity"/>
+                            <label for="district" class="form-label">Bairro</label>
+                            <input type="text" class="form-control" id="district" value={address.district}/>
                         </div>
                         <div class="col-md-6">
-                            <label for="inputCity" class="form-label">Cidade</label>
-                            <input type="text" class="form-control" id="inputCity"/>
+                            <label for="city" class="form-label">Cidade</label>
+                            <input type="text" class="form-control" id="city" value={address.city}/>
                         </div>
                         <div class="col-md-4">
-                            <label for="inputState" class="form-label">Estado</label>
-                            <select id="inputState" class="form-select">
-                                <option selected>Selecione</option>
-                                <option>...</option>
+                            <label for="uf" class="form-label">Estado</label>
+                            <select id="uf" class="form-select">
+                            <option value="" selected={address.uf=="" ? true : false}>Selecione</option>
+                            <option value="RN" selected={address.uf=="RN" ? true : false}>RN</option>
                             </select>
                         </div>
                     </div>
