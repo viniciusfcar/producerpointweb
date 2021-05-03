@@ -54,7 +54,7 @@ function Login() {
 
     return(
         <>
-            <header className="header">
+            <header className="header col-xs-12 col-sm-10 col-md-6 col-lg-4">
                 <img src={logo} className="logo" alt="logo"/>
                 <h2 className="title">ProducerPoint</h2>
                 <div>

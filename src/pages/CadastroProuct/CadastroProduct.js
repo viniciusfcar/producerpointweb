@@ -6,7 +6,7 @@ import './CadastroProduct.css';
 
 function CadastroProduct() {
     let { id } = useParams();
-    console.log (id)
+
     const customStyles = {
         content : {
           top                   : '30%',
@@ -57,7 +57,6 @@ function CadastroProduct() {
         
         const body = {label: label}
         if(id>0){body.value=id}
-        console.log(JSON.stringify(body))
         const request = await fetch('https://apiproducers.serviceapp.net.br/api/products', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
