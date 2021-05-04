@@ -11,6 +11,7 @@ import CadastroProduct from '../src/pages/CadastroProuct/CadastroProduct';
 import ListaProducts from '../src/pages/ListaProducts/ListaProducts';
 import CadastroFarmingActivity from '../src/pages/CadastroFarmingActivity/CadastroFarmingActivity';
 import ListaFarmingActivities from '../src/pages/ListaFarmingActivities/ListaFarmingActivities';
+import DetalhesProducer from '../src/pages/DetalhesProducer/DetalhesProducer';
 
 export default function Routes() {
   return (
@@ -28,6 +29,7 @@ export default function Routes() {
           <RoutesPrivate path="/cadastro-farming-activity" exact component={CadastroFarmingActivity} />
           <RoutesPrivate path="/cadastro-farming-activity/:id" exact children={<CadastroFarmingActivity />} />
           <RoutesPrivate path="/lista-farming-activities" component={ListaFarmingActivities} />
+          <RoutesPrivate path="/detalhes-producer/:id" component={DetalhesProducer} />
         </AuthContext>
       </Switch>
     </Router>

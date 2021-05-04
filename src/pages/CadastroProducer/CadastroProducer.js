@@ -8,7 +8,7 @@ import { Alert } from 'react-bootstrap';
 function CadastroProducer() {
 
 
-        const customStyles = {
+    const customStyles = {
         content : {
           top                   : '30%',
           left                  : '50%',
@@ -21,7 +21,6 @@ function CadastroProducer() {
 
     //variáveis do Modal
     const [modal, setModal] = useState(false);
-    const [modalConfirm, setModalConfirm] = useState(false);
     const [msgModal, setMsgModal] = useState('');
 
     //variáveis do produtor
@@ -165,7 +164,7 @@ function CadastroProducer() {
         })
         
         const response = await request.json();
-        console.log(response)
+        
         if(response != null) {
             if(request.status >= 200 && request.status < 205){
                 setMsgModal('Produtor cadastrado com sucesso.');
@@ -178,27 +177,6 @@ function CadastroProducer() {
             setMsgModal('Erro inesperado, tente novamente ou contate o suporte.');
             setModal(true);
         }
-    }
-
-    const deleteConfirm = () => {
-            setMsgModal('Tem certeza que deseja excluir o Produtor?');
-            setModalConfirm(true);
-    }
-
-    const deleteProducer = async () => {
-        setModalConfirm(false);
-
-        const request = await fetch('https://apiproducers.serviceapp.net.br/api/producers/'+id, {
-            method: 'PUT'
-        })
-        const response = await request.json();
-
-        if(response != null && request.status >= 200 && request.status < 205){
-            setMsgModal('Produtor excluido com sucesso.');
-        } else {
-            setMsgModal('Erro '+request.status);
-        }
-        setModal(true);
     }
 
     const addProduct = async (event) => {
@@ -221,18 +199,6 @@ function CadastroProducer() {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={closeModal}>Fechar</button>
-                </div>
-            </Modal>
-            <Modal 
-                isOpen={modalConfirm}
-                style={customStyles}
-            >
-                <div class="modal-body">
-                    <p>{msgModal}</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={deleteProducer}>Excluir</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={() => {setModalConfirm(false)}}>Cancelar</button>
                 </div>
             </Modal>
             <nav class="navbar" style={{marginTop: 10, backgroundColor: 'lightgray'}}>
@@ -372,11 +338,7 @@ function CadastroProducer() {
                     </div> 
                     <div class="col-6">
                         <button type="submit" class="btn btn-primary" onClick={validaForm}>Salvar</button>
-                    </div>
-                    <div class="col-6">
-                        <button class="btn btn-danger" onClick={deleteConfirm}>Excluir</button>
-                    </div>
-                    
+                    </div>                    
                 </form>
             </div>
         </>
