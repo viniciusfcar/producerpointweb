@@ -8,7 +8,12 @@ function ListaFarmingActivities(params) {
     const [andress, setAndress] = useState([]);
 
     const geraLink = (activity) => {
-        return <a href={"/cadastro-farming-activity/"+activity.id}>editar</a>
+        return (
+            <div class="btn-group btn-group-lg" role="group">
+                <a href={"/cadastro-farming-activity/"+activity.id} class="btn btn-primary">Editar</a>
+                <button class="btn btn-danger">Excluir</button>
+            </div>
+        )
     }
 
     const getActivities = async () => {
@@ -33,7 +38,7 @@ function ListaFarmingActivities(params) {
             <Navbar/>
             <nav class="navbar" style={{marginTop: 10, backgroundColor: 'lightgray'}}>
                 <div class="container-fluid" style={{alignItems: 'center', justifyContent: 'space-around'}}>
-                    <h3>Lista dos Produtos</h3>
+                    <h3>Lista das Atividades Agrícolas</h3>
                 </div>
             </nav>
             <div className="container">
