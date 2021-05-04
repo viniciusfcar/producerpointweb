@@ -8,7 +8,12 @@ function ListaProducts(params) {
     const [andress, setAndress] = useState([]);
 
     const geraLink = (product) => {
-        return <a href={"/cadastro-product/"+product.value}>editar</a>
+        return (
+            <div class="btn-group btn-group-lg" role="group">
+                <a href={"/cadastro-product/"+product.value} class="btn btn-primary">Editar</a>
+                <button class="btn btn-danger">Excluir</button>
+            </div>
+        )
     }
 
     const getProducts = async () => {
@@ -48,7 +53,7 @@ function ListaProducts(params) {
                                     data={products}
                                     fields={
                                         [
-                                            { name: 'value', displayName: "ID#", inputFilterable: true, sortable: true },
+                                            { name: 'value', displayName: "#ID", inputFilterable: true, sortable: true },
                                             { name: 'label', displayName: "Nome", inputFilterable: true, sortable: true },
                                             { name: 'links', displayName: "Links", inputFilterable: false, sortable: false },
                                         ]
