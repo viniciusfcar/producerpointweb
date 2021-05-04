@@ -1,13 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/NavBar/Navbar.js';
+import Modal from 'react-modal';
+import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { useParams } from "react-router-dom";
 import './CadastroProducer.css';
-import { activities, periods } from '../../enums'
+import { activities, periods, ufs } from '../../enums'
 import Select from 'react-select'
 
 import api from '../../services/api'
 
 function CadastroProducer() {
+
+    const customStyles = {
+        content : {
+          top                   : '30%',
+          left                  : '50%',
+          right                 : 'auto',
+          bottom                : 'auto',
+          marginRight           : '-50%',
+          transform             : 'translate(-50%, -50%)'
+        }
+    };
+
+    // ambiente
+    const [modal, setModal] = useState(false);
+    const [msgModal, setMsgModal] = useState('');
 
     // Producer
     let { id } = useParams();
@@ -25,8 +42,7 @@ function CadastroProducer() {
 
     // Produtos
     const [productList, setProductList] = useState([]);
-    
-
+ 
     // Address
     const [zipCode, setZipCode] = useState('')
     const [city, setCity] = useState('')
@@ -49,7 +65,7 @@ function CadastroProducer() {
         setCpf(response.cpf);
         setStatus(response.status);
         setRole(response.role);
-        setBirthDate(new Date());
+        setBirthDate(Date.parse(response.birthDate,'yyyy-MM-dd'));
 
         setZipCode(response.address.zipCode)
         setCity(response.address.city)
@@ -83,10 +99,19 @@ function CadastroProducer() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        await api.updateProducer(
+        setBirthDate(Date.parse(birthDate));
+
+        let response = await api.updateProducer(
             id, name, nickname, birthDate, phone, cpf, email, houseNumber, reference,
             averageCash, zipCode, city, district, uf, street, activity, resultList, period
         )
+
+        if(response != null && response.status == 200) {
+            setMsgModal('Produtor gravado com sucesso.');
+        } else {
+            setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+response.status);
+        }
+        setModal(true);
     }
 
     const productsList = () => {
@@ -103,11 +128,26 @@ function CadastroProducer() {
         return newArray
     }
 
+    const closeModal = () => {
+        setModal(false);
+    }
+
     const resultList = productsList()
 
     return (
         <>
             <Navbar />
+            <Modal 
+                isOpen={modal}
+                style={customStyles}
+            >
+                <div class="modal-body">
+                    <p>{msgModal}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={closeModal}>Fechar</button>
+                </div>
+            </Modal>
             <nav class="navbar" style={{ marginTop: 10, backgroundColor: 'lightgray' }}>
                 <div class="container-fluid" style={{ alignItems: 'center', justifyContent: 'space-around' }}>
                     <h3>Cadastro Produtor</h3>
@@ -140,8 +180,8 @@ function CadastroProducer() {
                         <input type="text" class="form-control" id="cpf" onChange={function (event) { setCpf(event.target.value) }} value={cpf} />
                     </div>
                     <div class="col-md-4">
-                        <label for="birthDate" class="form-label">Data de Nascimento</label>
-                        <input type="date" class="form-control" id="birthDate" onChange={function (event) { setBirthDate(event.target.value) }} value={birthDate} />
+                        <label for="birthDate" class="form-label">Data de Nascimento</label>{birthDate}
+                        <input type="date" class="form-control" id="birthDate" onChange={function (event) { setBirthDate(event.target.value) }} value={Date.parse(birthDate)} />
                     </div>
                     <div class="row g-2">
                         <div class="col-md-3">
@@ -170,28 +210,31 @@ function CadastroProducer() {
                         </div>
                         <div class="col-md-4">
                             <label for="uf" class="form-label">Estado</label>
-                            <select id="uf" class="form-select">
-                                <option value="" selected={uf == "" ? true : false}>Selecione</option>
-                                <option value="RN" selected={uf == "RN" ? true : false}>RN</option>
+                            <select id="uf" class="form-select" onChange={e => setUf(e.target.value)} value={uf} >
+                                <option selected>Selecione</option>
+                                {ufs.map((i) => (
+                                    <option key={i.value} value={i.value} selected={i.value==uf ? true : false}>{i.label}</option>
+                                ))}
                             </select>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-6">
                         <label for="inputState" class="form-label">Atividade Agrícola</label>
+                        {activity.activityName}
                         <select id="inputState" class="form-select" onChange={e => setActivity(e.target.value)}>
                             <option selected>Selecione</option>
                             {activities.map((i) => (
-                                <option key={i.value} value={i.value}>{i.label}</option>
+                                <option key={i.value} value={i.value} selected={i.value==activity ? true : false}>{i.label}</option>
                             ))}
                         </select>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-6">
                         <label for="inputState" class="form-label">Périodo da Renda</label>
                         <select id="inputState" class="form-select" onChange={e => setPeriod(e.target.value)}>
                             <option selected>Selecione</option>
                             {periods.map((i) => (
-                                <option key={i.value} value={i.label}>{i.label}</option>
+                                <option key={i.value} value={i.value} selected={i.value==period ? true : false}>{i.label}</option>
                             ))}
                         </select>
                     </div>

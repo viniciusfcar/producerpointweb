@@ -4,6 +4,8 @@ import Modal from 'react-modal';
 import { useParams } from "react-router-dom";
 import './CadastroProduct.css';
 
+import api from '../../services/api'
+
 function CadastroProduct() {
     let { id } = useParams();
 
@@ -23,9 +25,10 @@ function CadastroProduct() {
     const [modal, setModal] = useState(false);
     const [msgModal, setMsgModal] = useState('');
 
+    //recupera lista de produtos na API
     const getProduct = async (id) => {
-        const request = await fetch('https://apiproducers.serviceapp.net.br/api/products/'+id)
-        const response = await request.json();  
+        const request = await api.getProduct(id)
+        const response = await request.json();
         setValue(response.value);
         setLabel(response.label);
     }
@@ -44,12 +47,26 @@ function CadastroProduct() {
         setModal(false);
     }
 
-    const validaForm = () => {
+    const validaForm = (e) => {
         if(label == "" ) {
             setMsgModal("Nome do produto é de preenchimento obrigatório!");
             setModal(true);
         } else {
-            onCadastroProduto();
+            handleSubmit(e);
+        }
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        let response = await api.updateProduct(value, label);
+
+        if(response != null && response.status == 200) {
+            setMsgModal('Produto gravado com sucesso.');
+            setModal(true);
+        
+        } else {
+            setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+response.status);
+            setModal(true);
         }
     }
 

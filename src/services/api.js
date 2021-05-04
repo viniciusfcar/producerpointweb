@@ -1,7 +1,7 @@
 import BASE from './base'
 
 export default {
-
+    // user
     onSignIn: async (email, password) => {
         try {
             const request = await fetch(`${BASE.API}/signin`, {
@@ -19,6 +19,7 @@ export default {
         }
     },
 
+    // producer
     getAllProducers: async (id) => {
         try {
             const request = await fetch(`${BASE.API}/producers/${id}`, {
@@ -44,7 +45,7 @@ export default {
             const data = {
                 name: name,
                 nickname: nickname,
-                birthDate: null,
+                birthDate: Date(birthDate),
                 phone: phone,
                 cpf: cpf,
                 email: email,
@@ -68,15 +69,28 @@ export default {
                 }
             }
 
-            await fetch(`${BASE.API}/producers/${id}`, {
+            let request = await fetch(`${BASE.API}/producers/${id}`, {
                 method: 'PUT',
                 headers: headers,
                 body: JSON.stringify(data)
             })
+            return request;
         } catch (e) {
             console.log('Erro: updateProducer ' + e)
         }
     },
+
+    deleteProducer: async (id) => {
+        try {
+            const request = await fetch(`${BASE.API}/producers/${id}`, { method: 'DELETE' })
+            const response = await request.json()
+            return response
+        } catch (e) {
+            console.log('Erro: deleteProducer ' + e)
+        }
+    },
+
+    // product
 
     getAllProducts: async () => {
         try {
@@ -87,9 +101,46 @@ export default {
         }
     },
 
-    deleteProducer: async (id) => {
+    getProduct: async (id) => {
         try {
-            const request = await fetch(`${BASE.API}/producers/${id}`, { method: 'DELETE' })
+            const request = await fetch(`${BASE.API}/products/${id}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            return request;
+        } catch (e) {
+            console.log('Erro: getProduct ' + e)
+        }
+    },
+
+    updateProduct: async (
+        value, label
+    ) => {
+        try {
+
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json")
+            headers.append("Accept", 'application/json')
+
+            const data = {
+                value: value,
+                label: label
+            }
+
+            let request = await fetch(`${BASE.API}/products/${value}`, {
+                method: 'PUT',
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+            return request;
+        } catch (e) {
+            console.log('Erro: updateProduct ' + e)
+        }
+    },
+
+    deleteProduct: async (id) => {
+        try {
+            const request = await fetch(`${BASE.API}/products/${id}`, { method: 'DELETE' })
             const response = await request.json()
             return response
         } catch (e) {
