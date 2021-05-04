@@ -45,7 +45,7 @@ export default {
             const data = {
                 name: name,
                 nickname: nickname,
-                birthDate: Date(birthDate),
+                birthDate: birthDate,
                 phone: phone,
                 cpf: cpf,
                 email: email,
@@ -69,8 +69,11 @@ export default {
                 }
             }
 
-            let request = await fetch(`${BASE.API}/producers/${id}`, {
-                method: 'PUT',
+            let url=`${BASE.API}/producers`;
+            let method=`POST`;
+            if(id>0){ url+=`/${id}`; method=`PUT` };
+            let request = await fetch(url, {
+                method: method,
                 headers: headers,
                 body: JSON.stringify(data)
             })
@@ -123,12 +126,14 @@ export default {
             headers.append("Accept", 'application/json')
 
             const data = {
-                value: value,
                 label: label
             }
 
-            let request = await fetch(`${BASE.API}/products/${value}`, {
-                method: 'PUT',
+            let url=`${BASE.API}/products`;
+            let method=`POST`;
+            if(value>0){ data.value=value; url+=`/${value}`; method=`PUT` };
+            let request = await fetch(url, {
+                method: method,
                 headers: headers,
                 body: JSON.stringify(data)
             })

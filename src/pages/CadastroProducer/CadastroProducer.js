@@ -35,7 +35,7 @@ function CadastroProducer() {
     const [cpf, setCpf] = useState("");
     const [status, setStatus] = useState("");
     const [role, setRole] = useState("");
-    const [birthDate, setBirthDate] = useState("");
+    const [birthDate, setBirthDate] = useState(Date());
     const [activity, setActivity] = useState('');
     const [period, setPeriod] = useState('');
     const [products, setProducts] = useState([]);
@@ -65,7 +65,7 @@ function CadastroProducer() {
         setCpf(response.cpf);
         setStatus(response.status);
         setRole(response.role);
-        setBirthDate(Date.parse(response.birthDate,'yyyy-MM-dd'));
+        setBirthDate(response.birthDate?.substr(0,10));
 
         setZipCode(response.address.zipCode)
         setCity(response.address.city)
@@ -76,9 +76,9 @@ function CadastroProducer() {
         setReference(response.address.reference)
 
         setProducts([...response.products] || []);
-        setActivity(response.farmingActivity.activityName);
-        setPeriod(response.farmingActivity.period);
-        setAverageCash(response.farmingActivity.averageCash)
+        setActivity(response.farmingActivity?.activityName);
+        setPeriod(response.farmingActivity?.period);
+        setAverageCash(response.farmingActivity?.averageCash)
 
     }
 
@@ -106,7 +106,7 @@ function CadastroProducer() {
             averageCash, zipCode, city, district, uf, street, activity, resultList, period
         )
 
-        if(response != null && response.status == 200) {
+        if(response != null && response.status >= 200 && response.status <= 205) {
             setMsgModal('Produtor gravado com sucesso.');
         } else {
             setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+response.status);
@@ -180,8 +180,8 @@ function CadastroProducer() {
                         <input type="text" class="form-control" id="cpf" onChange={function (event) { setCpf(event.target.value) }} value={cpf} />
                     </div>
                     <div class="col-md-4">
-                        <label for="birthDate" class="form-label">Data de Nascimento</label>{birthDate}
-                        <input type="date" class="form-control" id="birthDate" onChange={function (event) { setBirthDate(event.target.value) }} value={Date.parse(birthDate)} />
+                        <label for="birthDate" class="form-label">Data de Nascimento</label>
+                        <input type="date" class="form-control" id="birthDate" onChange={function (event) { setBirthDate(event.target.value) }} value={birthDate} />
                     </div>
                     <div class="row g-2">
                         <div class="col-md-3">
@@ -220,7 +220,7 @@ function CadastroProducer() {
                     </div>
                     <div class="col-6">
                         <label for="inputState" class="form-label">Atividade Agrícola</label>
-                        {activity.activityName}
+                        {activity?.activityName}
                         <select id="inputState" class="form-select" onChange={e => setActivity(e.target.value)}>
                             <option selected>Selecione</option>
                             {activities.map((i) => (

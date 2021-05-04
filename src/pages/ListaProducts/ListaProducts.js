@@ -1,14 +1,35 @@
 import React, {useEffect, useState} from 'react';
 import Navbar from '../../components/NavBar/Navbar.js';
+import Modal from 'react-modal';
 const FilterableTable = require('react-filterable-table');
 
 function ListaProducts(params) {
-    
+
+    const customStyles = {
+        content : {
+          top                   : '30%',
+          left                  : '50%',
+          right                 : 'auto',
+          bottom                : 'auto',
+          marginRight           : '-50%',
+          transform             : 'translate(-50%, -50%)'
+        }
+    };
+
+    const [key, setKey] = useState(null);
+    const [modalConfirm, setModalConfirm] = useState(false);
+    const [msgModal, setMsgModal] = useState('');
+    const [modal, setModal] = useState(false);
     const [products, setProducts] = useState([]);
     const [andress, setAndress] = useState([]);
 
     const geraLink = (product) => {
-        return <a href={"/cadastro-product/"+product.value}>editar</a>
+        return (
+            <div class="btn-group btn-group-lg" role="group">
+                <a href={"/cadastro-product/"+product.value} class="btn btn-primary">Editar</a>
+                <button class="btn btn-danger" onClick={(value) => deleteConfirm(product.value, value)}>Excluir</button>
+            </div>
+        )
     }
 
     const getProducts = async () => {
@@ -24,6 +45,30 @@ function ListaProducts(params) {
         setProducts(response);
     }
 
+    const deleteConfirm = (id) => {
+        setKey(id)
+        setMsgModal('Tem certeza que deseja excluir o Produto?');
+        setModalConfirm(true);
+    }
+
+    const deleteProduct = async () => {
+        setModalConfirm(false);
+
+        const request = await fetch('https://apiproducers.serviceapp.net.br/api/products/'+key, {
+            method: 'DELETE'
+        })
+        console.log(request.status)
+        getProducts();
+        if(request.status == 200){
+            setMsgModal('Produto excluido com sucesso.');
+        } else {
+            setMsgModal('Erro '+request.status);
+        }
+        setModal(true);
+        getProducts();
+        
+    }
+
     useEffect(() => {
         getProducts();
     }, [])
@@ -31,9 +76,32 @@ function ListaProducts(params) {
     return(
         <>
             <Navbar/>
+            <Modal 
+                isOpen={modal}
+                style={customStyles}
+            >
+                <div class="modal-body">
+                    <p>{msgModal}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={() => {setModal(false)}}>Fechar</button>
+                </div>
+            </Modal>
+            <Modal 
+                isOpen={modalConfirm}
+                style={customStyles}
+            >
+                <div class="modal-body">
+                    <p>{msgModal}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={deleteProduct}>Excluir</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={() => {setModalConfirm(false)}}>Cancelar</button>
+                </div>
+            </Modal>
             <nav class="navbar" style={{marginTop: 10, backgroundColor: 'lightgray'}}>
                 <div class="container-fluid" style={{alignItems: 'center', justifyContent: 'space-around'}}>
-                    <h3>Lista dos Produtos</h3>
+                    <h3>Lista de Produtos</h3> 
                 </div>
             </nav>
             <div className="container">
@@ -48,7 +116,7 @@ function ListaProducts(params) {
                                     data={products}
                                     fields={
                                         [
-                                            { name: 'value', displayName: "ID#", inputFilterable: true, sortable: true },
+                                            { name: 'value', displayName: "#ID", inputFilterable: true, sortable: true },
                                             { name: 'label', displayName: "Nome", inputFilterable: true, sortable: true },
                                             { name: 'links', displayName: "Links", inputFilterable: false, sortable: false },
                                         ]

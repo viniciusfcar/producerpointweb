@@ -60,34 +60,12 @@ function CadastroProduct() {
         e.preventDefault();
         let response = await api.updateProduct(value, label);
 
-        if(response != null && response.status == 200) {
+        if(response != null && response.status >= 200 && response.status <= 205) {
             setMsgModal('Produto gravado com sucesso.');
             setModal(true);
-        
+            
         } else {
             setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+response.status);
-            setModal(true);
-        }
-    }
-
-    const onCadastroProduto = async () => {
-        
-        const body = {label: label}
-        if(id>0){body.value=id}
-        const request = await fetch('https://apiproducers.serviceapp.net.br/api/products', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        })
-        
-        const response = await request.json();
-
-        if(response != null) {
-            setMsgModal('Produto cadastrado com sucesso.');
-            setModal(true);
-        
-        } else {
-            setMsgModal('Erro inesperado, tente novamente ou contate o suporte.');
             setModal(true);
         }
     }

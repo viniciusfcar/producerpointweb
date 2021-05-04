@@ -1,15 +1,40 @@
 import React, {useEffect, useState} from 'react';
 import { Table } from 'react-bootstrap';
 import Navbar from '../../components/NavBar/Navbar.js';
+import Modal from 'react-modal';
 const FilterableTable = require('react-filterable-table');
 
 function ListaProducers(params) {
+
+    const customStyles = {
+        content : {
+          top                   : '30%',
+          left                  : '50%',
+          right                 : 'auto',
+          bottom                : 'auto',
+          marginRight           : '-50%',
+          transform             : 'translate(-50%, -50%)'
+        }
+    };
     
+    //Key para setar o id do produtor no modal para
+    const [key, setKey] = useState(null);
     const [producers, setProducers] = useState([]);
     const [andress, setAndress] = useState([]);
 
+    //Variáveis Modal
+    const [modalConfirm, setModalConfirm] = useState(false);
+    const [msgModal, setMsgModal] = useState('');
+    const [modal, setModal] = useState(false);
+
     const geraLink = (producer) => {
-        return <a href={"/cadastro-producer/"+producer.id}>editar</a>
+        return (
+            <div class="btn-group btn-group-lg" role="group">
+                <a href={"/detalhes-producer/"+producer.id} class="btn btn-success">Detalhes</a>
+                <a href={"/cadastro-producer/"+producer.id} class="btn btn-primary">Editar</a>
+                <button class="btn btn-danger" onClick={(id) => deleteConfirm(producer.id, id)}>Excluir</button>
+            </div>
+        )
     }
 
     const getProducers = async () => {
@@ -25,6 +50,27 @@ function ListaProducers(params) {
         setProducers(response);
     }
 
+    const deleteConfirm = (id) => {
+        setKey(id)
+        setMsgModal('Tem certeza que deseja excluir o Produtor?');
+        setModalConfirm(true);
+    }
+
+    const deleteProducer = async () => {
+        setModalConfirm(false);
+
+        const request = await fetch('https://apiproducers.serviceapp.net.br/api/producers/'+key, {
+            method: 'DELETE'
+        })
+        if(request.status == 200){
+            setMsgModal('Produtor excluido com sucesso.');
+        } else {
+            setMsgModal('Erro '+request.status);
+        }
+        setModal(true);
+        getProducers();
+    }
+
     useEffect(() => {
         getProducers();
     }, [])
@@ -32,6 +78,29 @@ function ListaProducers(params) {
     return(
         <>
             <Navbar/>
+            <Modal 
+                isOpen={modal}
+                style={customStyles}
+            >
+                <div class="modal-body">
+                    <p>{msgModal}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={() => {setModal(false)}}>Fechar</button>
+                </div>
+            </Modal>
+            <Modal 
+                isOpen={modalConfirm}
+                style={customStyles}
+            >
+                <div class="modal-body">
+                    <p>{msgModal}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={deleteProducer}>Excluir</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={() => {setModalConfirm(false)}}>Cancelar</button>
+                </div>
+            </Modal>
             <nav class="navbar" style={{marginTop: 10, backgroundColor: 'lightgray'}}>
                 <div class="container-fluid" style={{alignItems: 'center', justifyContent: 'space-around'}}>
                     <h3>Lista dos Produtores</h3>
@@ -53,13 +122,6 @@ function ListaProducers(params) {
                                             { name: 'cpf', displayName: "CPF", inputFilterable: true, exactFilterable: true, sortable: true },
                                             { name: 'email', displayName: "E-mail", inputFilterable: true, exactFilterable: true, sortable: true },
                                             { name: 'phone', displayName: "Telefone", inputFilterable: true, exactFilterable: true, sortable: true },
-                                            { name: 'address.street', displayName: "Logradouro", inputFilterable: true, exactFilterable: true, sortable: true },
-                                            { name: 'address.houseNumber', displayName: "Número", inputFilterable: true, exactFilterable: true, sortable: true },
-                                            { name: 'address.reference', displayName: "Complemento", inputFilterable: true, exactFilterable: true, sortable: true },
-                                            { name: 'address.district', displayName: "Bairro", inputFilterable: true, exactFilterable: true, sortable: true },
-                                            { name: 'address.city', displayName: "Cidade", inputFilterable: true, exactFilterable: true, sortable: true },
-                                            { name: 'address.uf', displayName: "Estado", inputFilterable: true, exactFilterable: true, sortable: true },
-                                            { name: 'address.zipCode', displayName: "CEP", inputFilterable: true, exactFilterable: true, sortable: true },
                                             { name: 'links', displayName: "Links", inputFilterable: false, sortable: false },
                                         ]
                                     }
