@@ -116,6 +116,15 @@ export default {
         }
     },
 
+    getProducersFromProduct: async (id) => {
+        try {
+            const request = await fetch(`${BASE.API}/products/${id}/producers`) || [];
+            return request;
+        } catch (e) {
+            console.log('Erro: getProduct ' + e)
+        }
+    },
+
     updateProduct: async (
         value, label
     ) => {

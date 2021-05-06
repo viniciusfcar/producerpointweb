@@ -26,6 +26,7 @@ function ListaProducts(params) {
     const geraLink = (product) => {
         return (
             <div class="btn-group btn-group-lg" role="group">
+                <a href={"/detalhes-product/"+product.value} class="btn btn-success">Detalhes</a>
                 <a href={"/cadastro-product/"+product.value} class="btn btn-primary">Editar</a>
                 <button class="btn btn-danger" onClick={(value) => deleteConfirm(product.value, value)}>Excluir</button>
             </div>

@@ -73,35 +73,46 @@ function DetalhesProducer(params) {
                                         <tr>
                                             <th scope="col">Nome</th>
                                             <th scope="col">Data de Nascimento</th>
-                                            <th scope="col">CPF</th>
+                                            <th scope="col" colspan={2}>CPF</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>{name}</td>
                                             <td>{format(Date.parse(birthDate!='' ? birthDate : new Date()), 'dd/MM/yyyy')}</td>
-                                            <td>{cpf}</td>
+                                            <td colspan={2}>{cpf}</td>
                                         </tr>
                                     </tbody>
                                     <thead>
                                         <tr>
                                             <th scope="col">Nick Name</th>
                                             <th scope="col">Telefone</th>
-                                            <th scope="col">E-mail</th>
+                                            <th scope="col" colspan={2}>E-mail</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>{nickname}</td>
                                             <td>{phone}</td>
-                                            <td>{email}</td>
+                                            <td colspan={2}>{email}</td>
                                         </tr>
                                     </tbody>
                                     <thead>
                                         <tr>
                                             <th scope="col">Logradouro</th>
                                             <th scope="col">Número</th>
-                                            <th scope="col">Complemento</th>
+                                            <th scope="col" colspan={2}>Complemento</th>
+                                            </tr>
+                                        </thead>
+                                    <tbody>
+                                        <tr>    
+                                            <td>{address.street}</td>
+                                            <td>{address.houseNumber}</td>
+                                            <td colspan={2}>{address.reference}</td>
+                                            </tr>
+                                        </tbody>
+                                    <thead>
+                                        <tr>
                                             <th scope="col">Bairro</th>
                                             <th scope="col">Cidade</th>
                                             <th scope="col">Estado</th>
@@ -110,9 +121,6 @@ function DetalhesProducer(params) {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{address.street}</td>
-                                            <td>{address.houseNumber}</td>
-                                            <td>{address.reference}</td>
                                             <td>{address.district}</td>
                                             <td>{address.city}</td>
                                             <td>{address.uf}</td>
@@ -142,12 +150,11 @@ function DetalhesProducer(params) {
                                 <div class="alert alert-secondary" role="alert">
                                     <h4>Produtos</h4>
                                 </div>
+                                <ul>
                                 {products.map((product) =>
-                                    <li>{product.label}</li>
+                                    <li><a href={`/detalhes-product/${product.value}`}>{product.label}</a></li>
                                 )}
-                            </div>
-                            <div className="btn-back">
-                                
+                                </ul>
                             </div>
                         </div>
                         <div className="btn-back">
