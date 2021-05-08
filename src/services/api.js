@@ -32,6 +32,19 @@ export default {
         }
     },
 
+    // producer
+    getProducersByActivity: async (activityName) => {
+        try {
+            const request = await fetch(`${BASE.API}/producers/byactivity/${activityName}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            return request
+        } catch (e) {
+            console.log('Erro: getProducersByActivity ' + e)
+        }
+    },
+
     updateProducer: async (
         id, name, nickname, birthDate, phone, cpf, email, houseNumber, reference,
         averageCash, zipCode, city, district, uf, street, activity, resultList, period

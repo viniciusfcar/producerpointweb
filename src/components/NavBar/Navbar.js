@@ -30,6 +30,7 @@ const Navbar = () => {
                                 Listar
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="/lista-farming-activities">Atividade</a></li>
                                 <li><a class="dropdown-item" href="/lista-producers">Produtores</a></li>
                                 <li><a class="dropdown-item" href="/lista-products">Produtos</a></li>
                             </ul>

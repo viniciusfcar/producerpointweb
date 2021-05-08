@@ -4,38 +4,25 @@ import Navbar from '../../components/NavBar/Navbar.js';
 import { useParams } from "react-router-dom";
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 
-import './DetalhesProduct.css';
+import './DetalhesActivity.css';
 import api from '../../services/api'
 
-function DetalhesProduct(params) {
+function DetalhesActivity(params) {
     
 
     //variáveis do produto
-    let { id } = useParams();
-    const [label, setLabel] = useState("");
+    let { activityName } = useParams();
     const [producers, setProducers] = useState([]);
 
-    const getProduct = async (value) => {
-        const request = await api.getProduct(value)
-        const response = await request.json();   
-        setVars(response);
-    }
-
-    const getProducers = async (value) => {
-        const request = await api.getProducersFromProduct(value)
+    const getProducers = async (activityName) => {
+        const request = await api.getProducersByActivity(activityName)
         const response = await request.json();   
         console.log(response)
         setProducers(response);
     }
 
-    const setVars = async (product) => {
-        id = product.value;
-        setLabel(product.label);
-    }
-
     useEffect(() => {
-        getProduct(id);
-        getProducers(id);
+        getProducers(activityName);
     }, [])
     
     return(
@@ -43,7 +30,7 @@ function DetalhesProduct(params) {
             <Navbar/>
             <nav class="navbar" style={{marginTop: 10, backgroundColor: 'lightgray'}}>
                 <div class="container-fluid" style={{alignItems: 'center', justifyContent: 'space-around'}}>
-                    <h3>Detalhes Produto</h3>
+                    <h3>Detalhes Actividade</h3>
                 </div>
             </nav>
             <div className="container">
@@ -51,19 +38,17 @@ function DetalhesProduct(params) {
                     <div class="col-12">
                         <div class="card-body">
                             <div class="alert alert-secondary" role="alert">
-                                <h4>Dados do Produto</h4>
+                                <h4>Dados da Atividade</h4>
                             </div>
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">ID</th>
                                         <th scope="col">Nome</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{id}</td>
-                                        <td>{label}</td>
+                                        <td>{activityName}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -91,7 +76,7 @@ function DetalhesProduct(params) {
                                 </table>
                         </div>
                         <div className="btn-back">
-                        <a href="/lista-products" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Voltar</a>
+                        <a href="/lista-farming-activities" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Voltar</a>
                         </div>
                     </div>
                 </div>
@@ -100,4 +85,4 @@ function DetalhesProduct(params) {
     );
 }
 
-export default DetalhesProduct;
+export default DetalhesActivity;

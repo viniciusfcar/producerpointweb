@@ -1,37 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import Navbar from '../../components/NavBar/Navbar.js';
+import { activities, periods, ufs } from '../../enums'
+
 const FilterableTable = require('react-filterable-table');
 
-function ListaFarmingActivities(params) {
-    
-    const [activities, setActivities] = useState([]);
-    const [andress, setAndress] = useState([]);
+function ListaFarmingActivities() {
 
     const geraLink = (activity) => {
         return (
             <div class="btn-group btn-group-lg" role="group">
-                <a href={"/cadastro-farming-activity/"+activity.id} class="btn btn-primary">Editar</a>
-                <button class="btn btn-danger">Excluir</button>
+                <a href={"/detalhes-activity/"+activity.value} class="btn btn-success">Detalhes</a>
             </div>
         )
     }
 
-    const getActivities = async () => {
-        const request = await fetch('https://apiproducers.serviceapp.net.br/api/farming-activities', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-        
-        const response = await request.json();
-        response.map(function (a) {
-            a.links=geraLink(a)
-        })
-        setActivities(response);
-    }
-
-    useEffect(() => {
-        getActivities();
-    }, [])
+    activities.map(function (a) {
+        a.links=geraLink(a)
+    })
     
     return(
         <>
@@ -53,9 +38,7 @@ function ListaFarmingActivities(params) {
                                     data={activities}
                                     fields={
                                         [
-                                            { name: 'activityName', displayName: "Nome", inputFilterable: true, sortable: true },
-                                            { name: 'period', displayName: "Período", inputFilterable: true, sortable: true },
-                                            { name: 'averageCash', displayName: "Ganho Médio", inputFilterable: true, sortable: true },
+                                            { name: 'value', displayName: "Nome", inputFilterable: true, sortable: true },
                                             { name: 'links', displayName: "Links", inputFilterable: false, sortable: false },
                                        ]
                                     }
