@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { useParams } from "react-router-dom";
 import './CadastroProducer.css';
-import { activities, periods, ufs } from '../../enums'
+import { periods, ufs } from '../../enums'
 import Select from 'react-select'
 
 import api from '../../services/api'
@@ -42,6 +42,10 @@ function CadastroProducer() {
 
     // Produtos
     const [productList, setProductList] = useState([]);
+
+    // Atividades
+
+    const [activityList, setActivityList] = useState([]);
  
     // Address
     const [zipCode, setZipCode] = useState('')
@@ -67,18 +71,18 @@ function CadastroProducer() {
         setRole(response.role);
         setBirthDate(response.birthDate?.substr(0,10));
 
-        setZipCode(response.address.zipCode)
-        setCity(response.address.city)
-        setStreet(response.address.street)
-        setDistrict(response.address.district)
-        setUf(response.address.uf)
-        setHouseNumber(response.address.houseNumber)
-        setReference(response.address.reference)
+        setZipCode(response.address?.zipCode)
+        setCity(response.address?.city)
+        setStreet(response.address?.street)
+        setDistrict(response.address?.district)
+        setUf(response.address?.uf)
+        setHouseNumber(response.address?.houseNumber)
+        setReference(response.address?.reference)
 
-        setProducts([...response.products] || []);
-        setActivity(response.farmingActivity?.activityName);
-        setPeriod(response.farmingActivity?.period);
-        setAverageCash(response.farmingActivity?.averageCash)
+        setProducts([...response?.products] || []);
+        setActivity(response?.farmingActivity?.activityName?.value);
+        setPeriod(response?.farmingActivity?.period);
+        setAverageCash(response?.farmingActivity?.averageCash)
 
     }
 
@@ -89,11 +93,19 @@ function CadastroProducer() {
         setProductList(response);
     }
 
+    //recupera lista de atividades na API
+    const getActivities = async () => {
+        const request = await api.getAllActivities()
+        const response = await request.json();
+        setActivityList(response);
+    }
+
     useEffect(() => {
         if (id > 0) {
             getProducer(id);
         }
         getProducts()
+        getActivities()
     }, [])
 
     const handleSubmit = async (e) => {
@@ -223,7 +235,7 @@ function CadastroProducer() {
                         {activity?.activityName}
                         <select id="inputState" class="form-select" onChange={e => setActivity(e.target.value)}>
                             <option selected>Selecione</option>
-                            {activities.map((i) => (
+                            {activityList.map((i) => (
                                 <option key={i.value} value={i.value} selected={i.value==activity ? true : false}>{i.label}</option>
                             ))}
                         </select>
@@ -248,7 +260,7 @@ function CadastroProducer() {
                     />
 
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
                     </div>
                 </form>
             </div>

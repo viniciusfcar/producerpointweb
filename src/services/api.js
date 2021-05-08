@@ -1,7 +1,7 @@
 import BASE from './base'
 
 export default {
-    // user
+    // GET
     onSignIn: async (email, password) => {
         try {
             const request = await fetch(`${BASE.API}/signin`, {
@@ -19,7 +19,6 @@ export default {
         }
     },
 
-    // producer
     getAllProducers: async (id) => {
         try {
             const request = await fetch(`${BASE.API}/producers/${id}`, {
@@ -32,22 +31,71 @@ export default {
         }
     },
 
-    // producer
-    getProducersByActivity: async (activityName) => {
+    getAllProducts: async () => {
         try {
-            const request = await fetch(`${BASE.API}/producers/byactivity/${activityName}`, {
+            const request = await fetch(`${BASE.API}/products`) || []
+            return request
+        } catch (e) {
+            console.log('Erro: getAllProducts ' + e)
+        }
+    },
+
+    getProduct: async (id) => {
+        try {
+            const request = await fetch(`${BASE.API}/products/${id}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
             })
+            return request;
+        } catch (e) {
+            console.log('Erro: getProduct ' + e)
+        }
+    },
+
+    getAllActivities: async () => {
+        try {
+            const request = await fetch(`${BASE.API}/activities`) || []
+            return request
+        } catch (e) {
+            console.log('Erro: getAllActivities ' + e)
+        }
+    },
+
+    getActivity: async (id) => {
+        try {
+            const request = await fetch(`${BASE.API}/activities/${id}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            return request;
+        } catch (e) {
+            console.log('Erro: getProduct ' + e)
+        }
+    },
+
+    getProducersFromProduct: async (id) => {
+        try {
+            const request = await fetch(`${BASE.API}/products/${id}/producers`) || [];
+            return request;
+        } catch (e) {
+            console.log('Erro: getProduct ' + e)
+        }
+    },
+
+    getProducersByActivity: async (id) => {
+        try {
+            const request = await fetch(`${BASE.API}/producers/findByActivity/${id}`) || [];
             return request
         } catch (e) {
             console.log('Erro: getProducersByActivity ' + e)
         }
     },
 
+    // UPDATE
+
     updateProducer: async (
         id, name, nickname, birthDate, phone, cpf, email, houseNumber, reference,
-        averageCash, zipCode, city, district, uf, street, activity, resultList, period
+        averageCash, zipCode, city, district, uf, street, activityId, resultList, period
     ) => {
         try {
 
@@ -73,7 +121,9 @@ export default {
                 },
                 farmingActivity: {
                     averageCash: parseFloat(averageCash),
-                    activityName: activity,
+                    activityName: {
+                        value : activityId
+                    },
                     period: period
                 },
                 products: resultList,
@@ -93,48 +143,6 @@ export default {
             return request;
         } catch (e) {
             console.log('Erro: updateProducer ' + e)
-        }
-    },
-
-    deleteProducer: async (id) => {
-        try {
-            const request = await fetch(`${BASE.API}/producers/${id}`, { method: 'DELETE' })
-            const response = await request.json()
-            return response
-        } catch (e) {
-            console.log('Erro: deleteProducer ' + e)
-        }
-    },
-
-    // product
-
-    getAllProducts: async () => {
-        try {
-            const request = await fetch(`${BASE.API}/products`) || []
-            return request
-        } catch (e) {
-            console.log('Erro: getAllProducts ' + e)
-        }
-    },
-
-    getProduct: async (id) => {
-        try {
-            const request = await fetch(`${BASE.API}/products/${id}`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-            })
-            return request;
-        } catch (e) {
-            console.log('Erro: getProduct ' + e)
-        }
-    },
-
-    getProducersFromProduct: async (id) => {
-        try {
-            const request = await fetch(`${BASE.API}/products/${id}/producers`) || [];
-            return request;
-        } catch (e) {
-            console.log('Erro: getProduct ' + e)
         }
     },
 
@@ -165,13 +173,62 @@ export default {
         }
     },
 
+    updateActivity: async (
+        value, label
+    ) => {
+        try {
+
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json")
+            headers.append("Accept", 'application/json')
+
+            const data = {
+                label: label
+            }
+
+            let url=`${BASE.API}/activities`;
+            let method=`POST`;
+            if(value>0){ data.value=value; url+=`/${value}`; method=`PUT` };
+            let request = await fetch(url, {
+                method: method,
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+            return request;
+        } catch (e) {
+            console.log('Erro: updateActivity ' + e)
+        }
+    },
+
+    // DELETE
+
+    deleteProducer: async (id) => {
+        try {
+            const request = await fetch(`${BASE.API}/producers/${id}`, { method: 'DELETE' })
+            const response = await request.json()
+            return response
+        } catch (e) {
+            console.log('Erro: deleteProducer ' + e)
+        }
+    },
+
     deleteProduct: async (id) => {
         try {
             const request = await fetch(`${BASE.API}/products/${id}`, { method: 'DELETE' })
             const response = await request.json()
             return response
         } catch (e) {
-            console.log('Erro: deleteProducer ' + e)
+            console.log('Erro: deleteProduct ' + e)
+        }
+    },
+
+    deleteActivity: async (id) => {
+        try {
+            const request = await fetch(`${BASE.API}/activities/${id}`, { method: 'DELETE' })
+            const response = await request.json()
+            return response
+        } catch (e) {
+            console.log('Erro: deleteActivity ' + e)
         }
     },
 

@@ -141,9 +141,9 @@ function DetalhesProducer(params) {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{farmingActivity.activityName}</td>
-                                            <td>{farmingActivity.period}</td>
-                                            <td>{farmingActivity.averageCash}</td>
+                                            <td>{farmingActivity?.activityName?.label}</td>
+                                            <td>{farmingActivity?.period}</td>
+                                            <td>{farmingActivity?.averageCash}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -158,7 +158,8 @@ function DetalhesProducer(params) {
                             </div>
                         </div>
                         <div className="btn-back">
-                        <a href="/lista-producers" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Voltar</a>
+                        <a href={`/cadastro-producer/${id}`} class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Editar</a>
+                        <a href="/lista-producers" class="btn btn-primary btn-lg active m-2" role="button" aria-pressed="true">Voltar</a>
                         </div>
                     </div>
                 </div>

@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import Navbar from '../../components/NavBar/Navbar.js';
 import Modal from 'react-modal';
 import { useParams } from "react-router-dom";
-import './CadastroProduct.css';
+import './CadastroActivity.css';
 
 import api from '../../services/api'
 
-function CadastroProduct() {
+function CadastroActivity() {
 
     const customStyles = {
         content : {
@@ -25,8 +25,8 @@ function CadastroProduct() {
     const [modal, setModal] = useState(false);
     const [msgModal, setMsgModal] = useState('');
 
-    const getProduct = async (id) => {
-        const request = await api.getProduct(id)
+    const getActivity = async (id) => {
+        const request = await api.getActivity(id)
         const response = await request.json();
         setValue(response.value);
         setLabel(response.label);
@@ -34,7 +34,7 @@ function CadastroProduct() {
     
     useEffect(() => {
         if(id > 0) {
-            getProduct(id);
+            getActivity(id);
         } 
     }, [])
 
@@ -48,7 +48,7 @@ function CadastroProduct() {
 
     const validaForm = (e) => {
         if(label == "" ) {
-            setMsgModal("Nome do produto é de preenchimento obrigatório!");
+            setMsgModal("Nome da atividade é de preenchimento obrigatório!");
             setModal(true);
         } else {
             handleSubmit(e);
@@ -57,10 +57,10 @@ function CadastroProduct() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let response = await api.updateProduct(value, label);
+        let response = await api.updateActivity(value, label);
 
         if(response != null && response.status >= 200 && response.status <= 205) {
-            setMsgModal('Produto gravado com sucesso.');
+            setMsgModal('Atividade gravada com sucesso.');
             setModal(true);
             
         } else {
@@ -86,7 +86,7 @@ function CadastroProduct() {
             </Modal>
             <nav class="navbar" style={{marginTop: 10, backgroundColor: 'lightgray'}}>
                 <div class="container-fluid" style={{alignItems: 'center', justifyContent: 'space-around'}}>
-                    <h3>Cadastro Produto</h3>
+                    <h3>Cadastro Atividade</h3>
                 </div>
             </nav>
             <div className="container">
@@ -104,4 +104,4 @@ function CadastroProduct() {
     );
 }
 
-export default CadastroProduct;
+export default CadastroActivity;

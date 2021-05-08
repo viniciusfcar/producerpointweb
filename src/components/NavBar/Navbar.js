@@ -21,6 +21,7 @@ const Navbar = () => {
                                 Cadastro
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="/cadastro-activity">Atividade</a></li>
                                 <li><a class="dropdown-item" href="/cadastro-producer">Produtor</a></li>
                                 <li><a class="dropdown-item" href="/cadastro-product">Produto</a></li>
                             </ul>
@@ -30,7 +31,7 @@ const Navbar = () => {
                                 Listar
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="/lista-farming-activities">Atividade</a></li>
+                                <li><a class="dropdown-item" href="/lista-activities">Atividade</a></li>
                                 <li><a class="dropdown-item" href="/lista-producers">Produtores</a></li>
                                 <li><a class="dropdown-item" href="/lista-products">Produtos</a></li>
                             </ul>

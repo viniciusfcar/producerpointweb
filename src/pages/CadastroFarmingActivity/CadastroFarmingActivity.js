@@ -136,7 +136,7 @@ function CadastroFarmingActivity() {
                         <input type="number" class="form-control" id="averageCash" value={cash} onChange={onCash} required />
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary" onClick={validaForm}>Cadastrar</button>
+                        <button type="submit" class="btn btn-primary" onClick={validaForm}>Salvar</button>
                     </div>
                 </div>
             </div>

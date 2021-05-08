@@ -9,20 +9,32 @@ import api from '../../services/api'
 
 function DetalhesActivity(params) {
     
-
-    //variáveis do produto
-    let { activityName } = useParams();
+    //variáveis da atividade
+    let { id } = useParams();
+    const [label, setLabel] = useState("");
     const [producers, setProducers] = useState([]);
 
-    const getProducers = async (activityName) => {
-        const request = await api.getProducersByActivity(activityName)
+    const getActivity = async (value) => {
+        const request = await api.getActivity(value)
+        const response = await request.json();   
+        setVars(response);
+    }
+
+    const getProducers = async (value) => {
+        const request = await api.getProducersByActivity(value)
         const response = await request.json();   
         console.log(response)
         setProducers(response);
     }
 
+    const setVars = async (activity) => {
+        id = activity.value;
+        setLabel(activity.label);
+    }
+
     useEffect(() => {
-        getProducers(activityName);
+        getActivity(id);
+        getProducers(id);
     }, [])
     
     return(
@@ -48,7 +60,7 @@ function DetalhesActivity(params) {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{activityName}</td>
+                                        <td>{label}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -76,7 +88,8 @@ function DetalhesActivity(params) {
                                 </table>
                         </div>
                         <div className="btn-back">
-                        <a href="/lista-farming-activities" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Voltar</a>
+                            <a href={`/cadastro-activity/${id}`} class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Editar</a>
+                            <a href="/lista-activities" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Voltar</a>
                         </div>
                     </div>
                 </div>
