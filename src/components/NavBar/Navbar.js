@@ -2,14 +2,21 @@ import React, {useEffect, useState, useContext} from 'react';
 import logo from '../../imagens/logo.png';
 import './Navbar.css';
 
+import { doLogout } from '../../services/auth'
+
 const Navbar = () => {
+
+    const handleLogout = () => {
+        doLogout()
+        window.location.href = '/'
+    }
 
     return(
         <>
             <nav class="navbar navbar-expand-lg navbar-dark bg-success">
                 <div class="container-fluid">
                     <img src={logo} style={{height : '48px'}} className="logo" alt="logo"/>
-                    <a class="navbar-brand" href="#">ProducerPoint</a>
+                    <a class="navbar-brand" href="/home">ProducerPoint</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                     </button>
@@ -36,7 +43,7 @@ const Navbar = () => {
                                 <li><a class="dropdown-item" href="/lista-products">Produtos</a></li>
                             </ul>
                         </li>
-                        <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Sair</a>
+                        <a onClick={handleLogout} class="nav-link" href="#" tabindex="-1" aria-disabled="true">Sair</a>
                     </div>
                     </div>
                 </div>
