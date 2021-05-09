@@ -27,17 +27,17 @@ const Routes = () => {
                 <Home />
             </RouteHandler>
 
-            <RouteHandler private path="/cadastro-producer">
+            <RouteHandler private exact path="/cadastro-producer">
                 <CadastroProducer />
             </RouteHandler>
             <RouteHandler private exact path="/cadastro-producer/:id" children={<CadastroProducer />} />
 
-            <RouteHandler private path="/cadastro-product">
+            <RouteHandler private exact path="/cadastro-product">
                 <CadastroProduct />
             </RouteHandler>
             <RouteHandler private exact path="/cadastro-product/:id" children={<CadastroProduct />} />
 
-            <RouteHandler private path="/cadastro-activity">
+            <RouteHandler private exact path="/cadastro-activity">
                 <CadastroActivity />
             </RouteHandler>
             <RouteHandler private exact path="/cadastro-activity/:id" children={<CadastroActivity />} />

@@ -19,7 +19,6 @@ export const Area = styled.div`
     }
 
     form{
-    width: 28%;
     border-radius: 5px;
     padding: 10px;
     display: flex;
