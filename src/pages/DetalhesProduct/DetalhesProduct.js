@@ -91,8 +91,8 @@ function DetalhesProduct(params) {
                                 </table>
                         </div>
                         <div className="btn-back">
-                            <a href={`/cadastro-product/${id}`} class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Editar</a>
-                            <a href="/lista-products" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Voltar</a>
+                            <a href={`/cadastro-product/${id}`} class="btn btn-outline-warning m-2" role="button" aria-pressed="true">Editar</a>
+                            <a href="/lista-products" class="btn btn-outline-primary m-2" role="button" aria-pressed="true">Voltar</a>
                         </div>
                     </div>
                 </div>

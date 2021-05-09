@@ -19,7 +19,19 @@ export default {
         }
     },
 
-    getAllProducers: async (id) => {
+    getAllProducers: async () => {
+        try {
+            const request = await fetch(`${BASE.API}/producers`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            return request
+        } catch (e) {
+            console.log('Erro: getAllProducers ' + e)
+        }
+    },
+
+    getProducer: async (id) => {
         try {
             const request = await fetch(`${BASE.API}/producers/${id}`, {
                 method: 'GET',

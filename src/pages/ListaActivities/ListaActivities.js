@@ -27,10 +27,10 @@ function ListaActivities(params) {
 
     const geraLink = (activity) => {
         return (
-            <div class="btn-group btn-group-lg" role="group">
-                <a href={"/detalhes-activity/"+activity.value} class="btn btn-success">Detalhes</a>
-                <a href={"/cadastro-activity/"+activity.value} class="btn btn-primary">Editar</a>
-                <button class="btn btn-danger" onClick={(value) => deleteConfirm(activity.value, value)}>Excluir</button>
+            <div class="btn-group btn-group" role="group">
+                <a href={"/detalhes-activity/"+activity.value} class="btn btn-sm btn-outline-success m-2">Detalhes</a>
+                <a href={"/cadastro-activity/"+activity.value} class="btn btn-sm btn-outline-warning m-2">Editar</a>
+                <button class="btn btn-sm btn-outline-danger m-2" onClick={(value) => deleteConfirm(activity.value, value)}>Excluir</button>
             </div>
         )
     }

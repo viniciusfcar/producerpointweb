@@ -96,7 +96,8 @@ function CadastroProduct() {
                         <input type="text" class="form-control" id="nome" value={label} onChange={onLabel} required />
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary" onClick={validaForm}>Salvar</button>
+                        <button type="submit" class="btn btn-outline-success m-2">Salvar</button>
+                        <a href='/lista-products' class="btn btn-outline-primary m-2">Voltar</a>
                     </div>
                 </div>
             </div>

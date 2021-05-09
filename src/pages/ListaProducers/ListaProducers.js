@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import { Table } from 'react-bootstrap';
 import Navbar from '../../components/NavBar/Navbar.js';
 import Modal from 'react-modal';
+
+import api from '../../services/api.js';
+
 const FilterableTable = require('react-filterable-table');
 
 function ListaProducers(params) {
@@ -29,19 +32,16 @@ function ListaProducers(params) {
 
     const geraLink = (producer) => {
         return (
-            <div class="btn-group btn-group-lg" role="group">
-                <a href={"/detalhes-producer/"+producer.id} class="btn btn-success">Detalhes</a>
-                <a href={"/cadastro-producer/"+producer.id} class="btn btn-primary">Editar</a>
-                <button class="btn btn-danger" onClick={(id) => deleteConfirm(producer.id, id)}>Excluir</button>
+            <div class="btn-group btn-group" role="group">
+                <a href={"/detalhes-producer/"+producer.id} class="btn btn-sm btn-outline-success m-2">Detalhes</a>
+                <a href={"/cadastro-producer/"+producer.id} class="btn btn-sm btn-outline-warning m-2">Editar</a>
+                <button class="btn btn-outline-danger btn-sm m-2" onClick={(id) => deleteConfirm(producer.id, id)}>Excluir</button>
             </div>
         )
     }
 
     const getProducers = async () => {
-        const request = await fetch('https://apiproducers.serviceapp.net.br/api/producers', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
+        const request = await api.getAllProducers();
         
         const response = await request.json();
         response.map(function (p) {

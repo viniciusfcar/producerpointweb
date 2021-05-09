@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 
 import './DetalhesProducer.css';
+import api from '../../services/api.js';
 
 function DetalhesProducer(params) {
     
@@ -21,14 +22,14 @@ function DetalhesProducer(params) {
     const [status, setStatus] = useState(true);
     const [role, setRole] = useState(1);
     const [birthDate, setBirthDate] = useState("");
+    const [created, setCreated] = useState("");
     const [address, setAddress] = useState({});
     const [farmingActivity, setFarmingActivity] = useState({});
     const [products, setProducts] = useState([]);
 
     const getProducer = async (id) => {
-        const request = await fetch('https://apiproducers.serviceapp.net.br/api/producers/'+id)
+        const request = await api.getProducer(id);
         const response = await request.json();
-        
         setVars(response);
     }
 
@@ -42,6 +43,7 @@ function DetalhesProducer(params) {
         setStatus(producer.status);
         setRole(producer.role);
         setBirthDate(producer.birthDate);
+        setCreated(producer.created);
         setAddress(producer.address);
         setProducts(producer.products);
         await setFarmingActivity(producer.farmingActivity);
@@ -72,15 +74,17 @@ function DetalhesProducer(params) {
                                     <thead>
                                         <tr>
                                             <th scope="col">Nome</th>
+                                            <th scope="col">CPF</th>
                                             <th scope="col">Data de Nascimento</th>
-                                            <th scope="col" colspan={2}>CPF</th>
+                                            <th scope="col">Data do Cadatramento</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>{name}</td>
-                                            <td>{format(Date.parse(birthDate!='' ? birthDate : new Date()), 'dd/MM/yyyy')}</td>
-                                            <td colspan={2}>{cpf}</td>
+                                            <td>{cpf}</td>
+                                            <td><input type='date' value={birthDate} disabled={true}/></td>
+                                            <td><input type='date' value={created} disabled={true}/></td>
                                         </tr>
                                     </tbody>
                                     <thead>
@@ -158,8 +162,8 @@ function DetalhesProducer(params) {
                             </div>
                         </div>
                         <div className="btn-back">
-                        <a href={`/cadastro-producer/${id}`} class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Editar</a>
-                        <a href="/lista-producers" class="btn btn-primary btn-lg active m-2" role="button" aria-pressed="true">Voltar</a>
+                            <a href={`/cadastro-producer/${id}`} class="btn btn-outline-warning m-2" role="button" aria-pressed="true">Editar</a>
+                            <a href="/lista-producers" class="btn btn-outline-primary m-2" role="button" aria-pressed="true">Voltar</a>
                         </div>
                     </div>
                 </div>

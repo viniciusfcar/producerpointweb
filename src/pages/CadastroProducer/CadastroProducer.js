@@ -8,6 +8,7 @@ import { periods, ufs } from '../../enums'
 import Select from 'react-select'
 
 import api from '../../services/api'
+import CPF from '../../services/cpf'
 
 function CadastroProducer() {
 
@@ -44,7 +45,6 @@ function CadastroProducer() {
     const [productList, setProductList] = useState([]);
 
     // Atividades
-
     const [activityList, setActivityList] = useState([]);
  
     // Address
@@ -60,7 +60,7 @@ function CadastroProducer() {
     //recupera dados do produtor na API
     const getProducer = async (id) => {
 
-        const request = await api.getAllProducers(id)
+        const request = await api.getProducer(id)
         const response = await request.json();
         setName(response.name);
         setNickname(response.nickname);
@@ -110,18 +110,30 @@ function CadastroProducer() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        setBirthDate(Date.parse(birthDate));
-
-        let response = await api.updateProducer(
-            id, name, nickname, birthDate, phone, cpf, email, houseNumber, reference,
-            averageCash, zipCode, city, district, uf, street, activity, resultList, period
-        )
-
-        if(response != null && response.status >= 200 && response.status <= 205) {
-            setMsgModal('Produtor gravado com sucesso.');
+        if(name=='' || nickname =='' || birthDate=='' || phone=='' || await CPF.validaCPF(cpf)==false ||
+        email=='' || houseNumber=='' || zipCode=='' || city=='' || 
+        district=='' || uf=='' || street=='' || activity=='' || period=='' ){
+            let mess;
+            if(await CPF.validaCPF(cpf)==false){
+                mess = ' O CFP digitado é inválido!a';
+            } else {
+                mess = 'Preencha todos os camopos marcaods com *.';
+            }
+            setMsgModal(mess);
         } else {
-            setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+response.status);
+            setBirthDate(Date.parse(birthDate));
+
+            let response = await api.updateProducer(
+                id, name, nickname, birthDate, phone, cpf, email, houseNumber, reference,
+                averageCash, zipCode, city, district, uf, street, activity, resultList, period
+            )
+    
+            if(response != null && response.status >= 200 && response.status <= 205) {
+                setMsgModal('Produtor gravado com sucesso.');
+                getProducer(id);
+            } else {
+                setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+response.status);
+            }
         }
         setModal(true);
     }
@@ -167,45 +179,45 @@ function CadastroProducer() {
             </nav>
             <div className="container">
                 <form class="row g-3" onSubmit={handleSubmit}>
-                <div class="col-md-2">
-                        <label for="id" class="form-label">Apelido</label>
+                    <div class="col-md-2">
+                        <label for="id" class="form-label">ID#</label>
                         <span type="text" class="form-control" id="id">{id}</span>
                     </div>
                     <div class="col-10">
-                        <label for="name" class="form-label">Nome</label>
+                        <label for="name" class="form-label">Nome*</label>
                         <input type="text" class="form-control" id="kame" placeholder="Ex: João de Oliveira" onChange={function (event) { setName(event.target.value) }} value={name} />
                     </div>
                     <div class="col-md-6">
-                        <label for="nickname" class="form-label">Apelido</label>
+                        <label for="nickname" class="form-label">Apelido*</label>
                         <input type="text" class="form-control" id="nickname" onChange={function (event) { setNickname(event.target.value) }} value={nickname} />
                     </div>
                     <div class="col-6">
-                        <label for="email" class="form-label">E-mail</label>
+                        <label for="email" class="form-label">E-mail*</label>
                         <input type="email" class="form-control" id="email" placeholder="Ex: joao@gmail.com" onChange={function (event) { setEmail(event.target.value) }} value={email} />
                     </div>
                     <div class="col-md-4">
-                        <label for="phone" class="form-label">Telefone</label>
+                        <label for="phone" class="form-label">Telefone*</label>
                         <input type="text" class="form-control" id="phone" onChange={function (event) { setPhone(event.target.value) }} value={phone} />
                     </div>
                     <div class="col-md-4">
-                        <label for="cpf" class="form-label">CPF</label>
+                        <label for="cpf" class="form-label">CPF*</label>
                         <input type="text" class="form-control" id="cpf" onChange={function (event) { setCpf(event.target.value) }} value={cpf} />
                     </div>
                     <div class="col-md-4">
-                        <label for="birthDate" class="form-label">Data de Nascimento</label>
+                        <label for="birthDate" class="form-label">Data de Nascimento*</label>
                         <input type="date" class="form-control" id="birthDate" onChange={function (event) { setBirthDate(event.target.value) }} value={birthDate} />
                     </div>
                     <div class="row g-2">
                         <div class="col-md-3">
-                            <label for="zipCode" class="form-label">CEP</label>
+                            <label for="zipCode" class="form-label">CEP*</label>
                             <input type="text" class="form-control" id="zipCode" onChange={e => setZipCode(e.target.value)} value={zipCode} />
                         </div>
                         <div class="col-md-7">
-                            <label for="street" class="form-label">Logradouro</label>
+                            <label for="street" class="form-label">Logradouro*</label>
                             <input type="text" class="form-control" id="street" onChange={e => setStreet(e.target.value)} value={street} />
                         </div>
                         <div class="col-md-2">
-                            <label for="houseNumber" class="form-label">Número</label>
+                            <label for="houseNumber" class="form-label">Número*</label>
                             <input type="text" class="form-control" id="houseNumber" onChange={e => setHouseNumber(e.target.value)} value={houseNumber} />
                         </div>
                         <div class="col-md-6">
@@ -213,42 +225,47 @@ function CadastroProducer() {
                             <input type="text" class="form-control" id="reference" onChange={e => setReference(e.target.value)} value={reference} />
                         </div>
                         <div class="col-md-6">
-                            <label for="district" class="form-label">Bairro</label>
+                            <label for="district" class="form-label">Bairro*</label>
                             <input type="text" class="form-control" id="district" onChange={e => setDistrict(e.target.value)} value={district} />
                         </div>
                         <div class="col-md-8">
-                            <label for="city" class="form-label">Cidade</label>
+                            <label for="city" class="form-label">Cidade*</label>
                             <input type="text" class="form-control" id="city" onChange={e => setCity(e.target.value)} value={city} />
                         </div>
                         <div class="col-md-4">
-                            <label for="uf" class="form-label">Estado</label>
+                            <label for="uf" class="form-label">Estado*</label>
                             <select id="uf" class="form-select" onChange={e => setUf(e.target.value)} value={uf} >
-                                <option selected>Selecione</option>
+                                <option selected></option>
                                 {ufs.map((i) => (
                                     <option key={i.value} value={i.value} selected={i.value==uf ? true : false}>{i.label}</option>
                                 ))}
                             </select>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <label for="inputState" class="form-label">Atividade Agrícola</label>
+                    <div class="col-4">
+                        <label for="inputState" class="form-label">Atividade Agrícola*</label>
                         {activity?.activityName}
                         <select id="inputState" class="form-select" onChange={e => setActivity(e.target.value)}>
-                            <option selected>Selecione</option>
+                            <option selected></option>
                             {activityList.map((i) => (
                                 <option key={i.value} value={i.value} selected={i.value==activity ? true : false}>{i.label}</option>
                             ))}
                         </select>
                     </div>
 
-                    <div class="col-6">
-                        <label for="inputState" class="form-label">Périodo da Renda</label>
+                    <div class="col-4">
+                        <label for="inputState" class="form-label">Périodo da Renda*</label>
                         <select id="inputState" class="form-select" onChange={e => setPeriod(e.target.value)}>
-                            <option selected>Selecione</option>
+                            <option selected></option>
                             {periods.map((i) => (
                                 <option key={i.value} value={i.value} selected={i.value==period ? true : false}>{i.label}</option>
                             ))}
                         </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="averageCash" class="form-label">Valor</label>
+                        <input type="text" class="form-control" id="averageCash" onChange={e => setAverageCash(e.target.value)} value={averageCash} />
                     </div>
 
                     <label for="inputState" class="form-label">Selecione os Produtos</label>
@@ -258,9 +275,9 @@ function CadastroProducer() {
                         isMulti
                         onChange={(item) => setProducts(item)}
                     />
-
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <button type="submit" class="btn btn-outline-success m-2">Salvar</button>
+                        <a href='/lista-producers' class="btn btn-outline-primary m-2">Voltar</a>
                     </div>
                 </form>
             </div>

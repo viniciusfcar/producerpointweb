@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import Navbar from '../../components/NavBar/Navbar.js';
 import Modal from 'react-modal';
+
+import api from '../../services/api.js';
+
 const FilterableTable = require('react-filterable-table');
 
 function ListaProducts(params) {
@@ -25,20 +28,16 @@ function ListaProducts(params) {
 
     const geraLink = (product) => {
         return (
-            <div class="btn-group btn-group-lg" role="group">
-                <a href={"/detalhes-product/"+product.value} class="btn btn-success">Detalhes</a>
-                <a href={"/cadastro-product/"+product.value} class="btn btn-primary">Editar</a>
-                <button class="btn btn-danger" onClick={(value) => deleteConfirm(product.value, value)}>Excluir</button>
+            <div class="btn-group btn-group" role="group">
+                <a href={"/detalhes-product/"+product.value} class="btn btn-sm btn-outline-success m-2">Detalhes</a>
+                <a href={"/cadastro-product/"+product.value} class="btn btn-sm btn-outline-warning m-2">Editar</a>
+                <button class="btn btn-outline-danger btn-sm m-2" onClick={(value) => deleteConfirm(product.value, value)}>Excluir</button>
             </div>
         )
     }
 
     const getProducts = async () => {
-        const request = await fetch('https://apiproducers.serviceapp.net.br/api/products', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-        
+        const request = await api.getAllProducts();
         const response = await request.json();
         response.map(function (p) {
             p.links=geraLink(p)
