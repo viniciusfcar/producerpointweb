@@ -96,7 +96,7 @@ function CadastroActivity() {
                         <input type="text" class="form-control" id="nome" value={label} onChange={onLabel} required />
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-outline-success m-2">Salvar</button>
+                        <button type="submit" onClick={validaForm} class="btn btn-outline-success m-2">Salvar</button>
                         <a href='/lista-activities' class="btn btn-outline-primary m-2">Voltar</a>
                     </div>
                 </div>

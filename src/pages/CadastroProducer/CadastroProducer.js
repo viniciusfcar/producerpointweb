@@ -115,9 +115,9 @@ function CadastroProducer() {
         district=='' || uf=='' || street=='' || activity=='' || period=='' ){
             let mess;
             if(await CPF.validaCPF(cpf)==false){
-                mess = ' O CFP digitado é inválido!a';
+                mess = 'O CFP digitado é inválido!';
             } else {
-                mess = 'Preencha todos os camopos marcaods com *.';
+                mess = 'Preencha todos os campos marcaods com *.';
             }
             setMsgModal(mess);
         } else {
@@ -258,7 +258,7 @@ function CadastroProducer() {
                         <select id="inputState" class="form-select" onChange={e => setPeriod(e.target.value)}>
                             <option selected></option>
                             {periods.map((i) => (
-                                <option key={i.value} value={i.value} selected={i.value==period ? true : false}>{i.label}</option>
+                                <option key={i.value} value={i.value} selected={(i.value==period || i.value=='Mensal') ? true : false}>{i.label}</option>
                             ))}
                         </select>
                     </div>
