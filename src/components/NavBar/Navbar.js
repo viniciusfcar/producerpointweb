@@ -19,7 +19,7 @@ const Navbar = () => {
             <nav class="navbar navbar-expand-lg navbar-dark bg-success">
                 <div className="container-fluid">
                     <img src={logo} style={{ height: '48px' }} className="logo" alt="logo" />
-                    <a class="navbar-brand" href="/home">Producer Point</a>
+                    <h4>Olá, {user?.name}</h4>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -49,7 +49,7 @@ const Navbar = () => {
                             <a onClick={handleLogout} class="nav-link" href="#" tabindex="-1" aria-disabled="true">Sair</a>
                         </div>
                     </div>
-                    <h4>Olá, {user.name}</h4>
+                    
                 </div>
             </nav>
         </>
