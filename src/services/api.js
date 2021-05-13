@@ -1,4 +1,6 @@
 import BASE from './base'
+import { AuthContext } from '../../components/Context/AuthContext.js';
+const { user } = useContext(AuthContext)
 
 export default {
     // GET
@@ -140,7 +142,7 @@ export default {
                 },
                 products: resultList,
                 manager: {
-                    id: 1,
+                    id: user?.id,
                 }
             }
 
