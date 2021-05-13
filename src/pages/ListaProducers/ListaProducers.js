@@ -34,6 +34,7 @@ function ListaProducers(params) {
         return (
             <div class="btn-group btn-group" role="group">
                 <a href={"/detalhes-producer/"+producer.id} class="btn btn-sm btn-outline-success m-2">Detalhes</a>
+                <a href={"https://apiproducers.serviceapp.net.br/api/producers/"+producer.id+"/pdf/1"} target="_new" class="btn btn-sm btn-outline-info m-2">PDF</a>
                 <a href={"/cadastro-producer/"+producer.id} class="btn btn-sm btn-outline-warning m-2">Editar</a>
                 <button class="btn btn-outline-danger btn-sm m-2" onClick={(id) => deleteConfirm(producer.id, id)}>Excluir</button>
             </div>

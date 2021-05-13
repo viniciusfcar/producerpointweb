@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Navbar from '../../components/NavBar/Navbar.js';
 import Modal from 'react-modal';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
@@ -7,10 +7,14 @@ import './CadastroProducer.css';
 import { periods, ufs } from '../../enums'
 import Select from 'react-select'
 
+import { AuthContext } from '../../components/Context/AuthContext.js';
+
 import api from '../../services/api'
 import CPF from '../../services/cpf'
 
 function CadastroProducer() {
+
+    const {user} =  useContext(AuthContext);
 
     const customStyles = {
         content : {
@@ -125,14 +129,15 @@ function CadastroProducer() {
 
             let response = await api.updateProducer(
                 id, name, nickname, birthDate, phone, cpf, email, houseNumber, reference,
-                averageCash, zipCode, city, district, uf, street, activity, resultList, period
+                averageCash, zipCode, city, district, uf, street, activity, resultList, period,
+                user?.id
             )
     
             if(response != null && response.status >= 200 && response.status <= 205) {
                 setMsgModal('Produtor gravado com sucesso.');
                 getProducer(id);
             } else {
-                setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+response.status);
+                setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+response?.status);
             }
         }
         setModal(true);

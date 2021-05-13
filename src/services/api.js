@@ -1,8 +1,7 @@
 import BASE from './base'
-import { AuthContext } from '../../components/Context/AuthContext.js';
-const { user } = useContext(AuthContext)
 
 export default {
+    
     // GET
     onSignIn: async (email, password) => {
         try {
@@ -109,7 +108,8 @@ export default {
 
     updateProducer: async (
         id, name, nickname, birthDate, phone, cpf, email, houseNumber, reference,
-        averageCash, zipCode, city, district, uf, street, activityId, resultList, period
+        averageCash, zipCode, city, district, uf, street, activityId, resultList, period,
+        manegerId
     ) => {
         try {
 
@@ -142,7 +142,7 @@ export default {
                 },
                 products: resultList,
                 manager: {
-                    id: user?.id,
+                    id: manegerId,
                 }
             }
 
