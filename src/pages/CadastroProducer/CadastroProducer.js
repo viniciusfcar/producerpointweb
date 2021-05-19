@@ -33,6 +33,7 @@ function CadastroProducer() {
 
     // Producer
     let { id } = useParams();
+    const [pid, setId] = useState(id);
     const [name, setName] = useState("");
     const [nickname, setNickname] = useState("");
     const [phone, setPhone] = useState("");
@@ -42,7 +43,7 @@ function CadastroProducer() {
     const [role, setRole] = useState("");
     const [birthDate, setBirthDate] = useState(Date());
     const [activity, setActivity] = useState('');
-    const [period, setPeriod] = useState('');
+    const [period, setPeriod] = useState('Mensal');
     const [products, setProducts] = useState([]);
 
     // Produtos
@@ -93,14 +94,18 @@ function CadastroProducer() {
     //recupera lista de produtos na API
     const getProducts = async () => {
         const request = await api.getAllProducts()
-        const response = await request.json();
+        const response = request.status == 200 ?
+                            await request.json() :
+                            []
         setProductList(response);
     }
 
     //recupera lista de atividades na API
     const getActivities = async () => {
         const request = await api.getAllActivities()
-        const response = await request.json();
+        const response = request.status == 200 ?
+                            await request.json() :
+                            []
         setActivityList(response);
     }
 
@@ -127,17 +132,18 @@ function CadastroProducer() {
         } else {
             setBirthDate(Date.parse(birthDate));
 
-            let response = await api.updateProducer(
-                id, name, nickname, birthDate, phone, cpf, email, houseNumber, reference,
+            let request = await api.updateProducer(
+                pid, name, nickname, birthDate, phone, cpf, email, houseNumber, reference,
                 averageCash, zipCode, city, district, uf, street, activity, resultList, period,
                 user?.id
             )
     
-            if(response != null && response.status >= 200 && response.status <= 205) {
+            if(request != null && request.status >= 200 && request.status <= 205) {
+                const response = await request.json();
                 setMsgModal('Produtor gravado com sucesso.');
-                getProducer(id);
+                setId(await response.id);
             } else {
-                setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+response?.status);
+                setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+request?.status);
             }
         }
         setModal(true);
@@ -186,7 +192,7 @@ function CadastroProducer() {
                 <form class="row g-3" onSubmit={handleSubmit}>
                     <div class="col-md-2">
                         <label for="id" class="form-label">ID#</label>
-                        <span type="text" class="form-control" id="id">{id}</span>
+                        <span type="text" class="form-control" id="id">{pid}</span>
                     </div>
                     <div class="col-10">
                         <label for="name" class="form-label">Nome*</label>

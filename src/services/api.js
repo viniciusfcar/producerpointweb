@@ -27,7 +27,7 @@ export default {
             const request = await fetch(`${BASE.API}/producers`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
-            })
+            });
             return request
         } catch (e) {
             console.log('Erro: getAllProducers ' + e)
@@ -276,8 +276,7 @@ export default {
     deleteProducer: async (id) => {
         try {
             const request = await fetch(`${BASE.API}/producers/${id}`, { method: 'DELETE' })
-            const response = await request.json()
-            return response
+            return request
         } catch (e) {
             console.log('Erro: deleteProducer ' + e)
         }
@@ -286,8 +285,7 @@ export default {
     deleteProduct: async (id) => {
         try {
             const request = await fetch(`${BASE.API}/products/${id}`, { method: 'DELETE' })
-            const response = await request.json()
-            return response
+            return request
         } catch (e) {
             console.log('Erro: deleteProduct ' + e)
         }
@@ -296,8 +294,7 @@ export default {
     deleteActivity: async (id) => {
         try {
             const request = await fetch(`${BASE.API}/activities/${id}`, { method: 'DELETE' })
-            const response = await request.json()
-            return response
+            return request
         } catch (e) {
             console.log('Erro: deleteActivity ' + e)
         }

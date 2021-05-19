@@ -67,7 +67,7 @@ function DetalhesProducer(params) {
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="alert alert-secondary" role="alert">
+                                <div class="alert alert-dark" role="alert">
                                     <h4>Dados Pessoais</h4>
                                 </div>
                                 <table class="table">
@@ -132,7 +132,7 @@ function DetalhesProducer(params) {
                                         </tr>
                                     </tbody>                                    
                                 </table>
-                                <div class="alert alert-secondary" role="alert">
+                                <div class="alert alert-dark" role="alert">
                                     <h4>Atividade Agrícola</h4>
                                 </div>
                                 <table class="table"> 

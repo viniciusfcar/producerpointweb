@@ -53,20 +53,14 @@ function ListaProducts(params) {
 
     const deleteProduct = async () => {
         setModalConfirm(false);
-
-        const request = await fetch('https://apiproducers.serviceapp.net.br/api/products/'+key, {
-            method: 'DELETE'
-        })
-        console.log(request.status)
+        const request = await api.deleteProduct(key);
         getProducts();
-        if(request.status == 200){
+        if(await request.status == 200){
             setMsgModal('Produto excluido com sucesso.');
         } else {
             setMsgModal('Erro '+request.status);
         }
         setModal(true);
-        getProducts();
-        
     }
 
     useEffect(() => {

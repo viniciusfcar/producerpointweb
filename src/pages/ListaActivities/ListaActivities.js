@@ -37,7 +37,9 @@ function ListaActivities(params) {
 
     const getActivities = async () => {
         const request = await api.getAllActivities();        
-        const response = await request.json();
+        const response = request.status == 200 ?
+                            await request.json() :
+                            []
         response.map(function (a) {
             a.links=geraLink(a)
         })
@@ -52,17 +54,14 @@ function ListaActivities(params) {
 
     const deleteProduct = async () => {
         setModalConfirm(false);
-
         const request = await api.deleteActivity(key)
-        console.log(request.status)
-        if(request.status == 200){
+        getActivities();
+        if(await request.status == 200){
             setMsgModal('Produto excluido com sucesso.');
         } else {
             setMsgModal('Erro '+request.status);
         }
         setModal(true);
-        getActivities();
-        
     }
 
     useEffect(() => {

@@ -41,8 +41,9 @@ function ListaManagers(params) {
 
     const getManagers = async () => {
         const request = await api.getAllManagers();
-        
-        const response = await request.json();
+        const response = request.status == 200 ?
+                            await request.json() :
+                            []
         response.map(function (p) {
             p.links=geraLink(p);
             p.perfil= p.role === 0 ? 'Administrador' : 'Técnico';
@@ -52,22 +53,20 @@ function ListaManagers(params) {
 
     const deleteConfirm = (id) => {
         setKey(id)
-        setMsgModal('Tem certeza que deseja excluir o Produtor?');
-        setOkModal(deleteManager)
+        setMsgModal('Tem certeza que deseja excluir o Produtor? '+key);
         setModalConfirm(true);
     }
 
     const deleteManager = async () => {
         setModalConfirm(false);
         const request = await api.deleteManager(key);
-        const response = await request.json()
-        if(request.status == 200){
+        getManagers();
+        if(await request.status == 200){
             setMsgModal('Produtor excluido com sucesso.');
         } else {
             setMsgModal('Erro '+request.status);
         }
         setModal(true);
-        getManagers();
     }
 
     useEffect(() => {
@@ -96,7 +95,7 @@ function ListaManagers(params) {
                     <p>{msgModal}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={okModal}>Excluir</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={deleteManager}>Excluir</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={() => {setModalConfirm(false)}}>Cancelar</button>
                 </div>
             </Modal>

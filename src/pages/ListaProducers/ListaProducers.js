@@ -42,8 +42,9 @@ function ListaProducers(params) {
 
     const getProducers = async () => {
         const request = await api.getAllProducers();
-        
-        const response = await request.json();
+        const response = request.status == 200 ?
+                            await request.json() :
+                            []
         response.map(function (p) {
             p.links=geraLink(p)
         })
@@ -58,17 +59,14 @@ function ListaProducers(params) {
 
     const deleteProducer = async () => {
         setModalConfirm(false);
-
-        const request = await fetch('https://apiproducers.serviceapp.net.br/api/producers/'+key, {
-            method: 'DELETE'
-        })
-        if(request.status == 200){
+        const request = await api.deleteProducer(key);
+        getProducers();
+        if(await request.status == 200){
             setMsgModal('Produtor excluido com sucesso.');
         } else {
             setMsgModal('Erro '+request.status);
         }
         setModal(true);
-        getProducers();
     }
 
     useEffect(() => {

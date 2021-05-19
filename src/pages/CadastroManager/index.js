@@ -33,6 +33,7 @@ function CadastroManager() {
 
     // Manager
     let { id } = useParams();
+    const [mid, setId] = useState(id);
     const [name, setName] = useState("");
     const [nickname, setNickname] = useState("");
     const [phone, setPhone] = useState("");
@@ -78,15 +79,16 @@ function CadastroManager() {
         } else {
             setBirthDate(Date.parse(birthDate));
 
-            let response = await api.updateManager(
-                id, name, nickname, birthDate, phone, cpf, email, role
+            let request = await api.updateManager(
+                mid, name, nickname, birthDate, phone, cpf, email, role
             )
     
-            if(response != null && response.status >= 200 && response.status <= 205) {
+            if(request != null && request.status >= 200 && request.status <= 205) {
+                const response = await request.json();
                 setMsgModal('Usuário gravado com sucesso.');
-                getManager(id);
+                setId(await response.id);
             } else {
-                setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+response?.status);
+                setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+request?.status);
             }
         }
         setModal(true);
@@ -145,7 +147,7 @@ function CadastroManager() {
                 <form class="row g-3" onSubmit={handleSubmit}>
                     <div class="col-md-2">
                         <label for="id" class="form-label">ID#</label>
-                        <span type="text" class="form-control" id="id">{id}</span>
+                        <span type="text" class="form-control" id="id">{mid}</span>
                     </div>
                     <div class="col-10">
                         <label for="name" class="form-label">Nome*</label>
