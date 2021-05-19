@@ -9,12 +9,16 @@ import Home from '../pages/Home/Home'
 import CadastroProducer from '../pages/CadastroProducer/CadastroProducer'
 import CadastroProduct from '../pages/CadastroProuct/CadastroProduct';
 import CadastroActivity from '../pages/CadastroActivity/CadastroActivity';
+import CadastroManager from '../pages/CadastroManager'
 import ListaProducers from '../pages/ListaProducers/ListaProducers';
 import ListaProducts from '../pages/ListaProducts/ListaProducts';
 import ListaActivities from '../pages/ListaActivities/ListaActivities';
+import ListaManagers from '../pages/ListaManagers';
 import DetalhesProducer from '../pages/DetalhesProducer/DetalhesProducer';
 import DetalhesProduct from '../pages/DetalhesProduct/DetalhesProduct';
 import DetalhesActivity from '../pages/DetalhesActivity/DetalhesActivity';
+import DetalhesManager from '../pages/DetalhesManager';
+
 
 const Routes = () => {
     return (
@@ -42,6 +46,11 @@ const Routes = () => {
             </RouteHandler>
             <RouteHandler private exact path="/cadastro-activity/:id" children={<CadastroActivity />} />
 
+            <RouteHandler private exact path="/cadastro-manager">
+                <CadastroManager />
+            </RouteHandler>
+            <RouteHandler private exact path="/cadastro-manager/:id" children={<CadastroManager />} />
+
             <RouteHandler private path="/lista-producers">
                 <ListaProducers />
             </RouteHandler>
@@ -54,6 +63,10 @@ const Routes = () => {
                 <ListaActivities />
             </RouteHandler>
 
+            <RouteHandler private path="/lista-managers">
+                <ListaManagers />
+            </RouteHandler>
+
             <RouteHandler private path="/detalhes-producer/:id">
                 <DetalhesProducer />
             </RouteHandler>
@@ -64,6 +77,10 @@ const Routes = () => {
 
             <RouteHandler private path="/detalhes-activity/:id">
                 <DetalhesActivity />
+            </RouteHandler>
+
+            <RouteHandler private path="/detalhes-manager/:id">
+                <DetalhesManager />
             </RouteHandler>
         </Switch>
     )

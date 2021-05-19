@@ -1,6 +1,8 @@
 import BASE from './base'
 
 export default {
+
+    BASE: BASE,
     
     // GET
     onSignIn: async (email, password) => {
@@ -101,6 +103,28 @@ export default {
             return request
         } catch (e) {
             console.log('Erro: getProducersByActivity ' + e)
+        }
+    },
+
+
+    getAllManagers: async () => {
+        try {
+            const request = await fetch(`${BASE.API}/managers`) || []
+            return request
+        } catch (e) {
+            console.log('Erro: getAllManagers ' + e)
+        }
+    },
+
+    getManager: async (id) => {
+        try {
+            const request = await fetch(`${BASE.API}/managers/${id}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            return request;
+        } catch (e) {
+            console.log('Erro: getManager ' + e)
         }
     },
 
@@ -214,6 +238,39 @@ export default {
         }
     },
 
+    updateManager: async (
+        id, name, nickname, birthDate, phone, cpf, email, role
+    ) => {
+        try {
+
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json")
+            headers.append("Accept", 'application/json')
+
+            const data = {
+                name: name,
+                nickname: nickname,
+                birthDate: birthDate,
+                phone: phone,
+                cpf: cpf,
+                email: email,
+                role : role,
+            }
+
+            let url=`${BASE.API}/managers`;
+            let method=`POST`;
+            if(id>0){ url+=`/${id}`; method=`PUT`; data.id = id;};
+            let request = await fetch(url, {
+                method: method,
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+            return request;
+        } catch (e) {
+            console.log('Erro: updateManager ' + e)
+        }
+    },
+
     // DELETE
 
     deleteProducer: async (id) => {
@@ -243,6 +300,15 @@ export default {
             return response
         } catch (e) {
             console.log('Erro: deleteActivity ' + e)
+        }
+    },
+
+    deleteManager: async (id) => {
+        try {
+            const request = await fetch(`${BASE.API}/managers/${id}`, { method: 'DELETE' })
+            return request
+        } catch (e) {
+            console.log('Erro: deleteManager ' + e)
         }
     },
 

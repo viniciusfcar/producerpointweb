@@ -1,5 +1,6 @@
 {
   "name": "producerpointweb",
+  "homepage" : "https://producerpoint.serviceapp.net.br",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

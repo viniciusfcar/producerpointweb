@@ -1,5 +1,7 @@
 export default {
-  validaCPF: async (strCPF) => {
+
+  validaCPF: async strCPF => {
+    strCPF = strCPF.replace(/\D/g, '') // substitui qualquer caracter que nao seja numero por nada
     var Soma = 0;
     var Resto;
     if (strCPF === "00000000000") return false;
@@ -17,5 +19,15 @@ export default {
     if ((Resto === 10) || (Resto === 11))  Resto = 0;
     if (Resto !== parseInt(strCPF.substring(10, 11) ) ) return false;
     return true;
+  },
+
+  cpfMask : async cpf => {
+    return cpf
+      .replace(/\D/g, '') // substitui qualquer caracter que nao seja numero por nada
+      .replace(/(\d{3})(\d)/, '$1.$2') // captura 2 grupos de numero o primeiro de 3 e o segundo de 1, apos capturar o primeiro grupo ele adiciona um ponto antes do segundo grupo de numero
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+      .replace(/(-\d{2})\d+?$/, '$1') // captura 2 numeros seguidos de um traço e não deixa ser digitado mais nada
   }
+
 };

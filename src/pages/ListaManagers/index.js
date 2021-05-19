@@ -6,7 +6,7 @@ import api from '../../services/api.js';
 
 const FilterableTable = require('react-filterable-table');
 
-function ListaProducers(params) {
+function ListaManagers(params) {
 
     const customStyles = {
         content : {
@@ -19,60 +19,59 @@ function ListaProducers(params) {
         }
     };
     
-    //Key para setar o id do produtor no modal para
+    //Key para setar o id do managers no modal
     const [key, setKey] = useState(null);
-    const [producers, setProducers] = useState([]);
-    const [andress, setAndress] = useState([]);
+    const [managers, setManagers] = useState([]);
 
     //Variáveis Modal
     const [modalConfirm, setModalConfirm] = useState(false);
     const [msgModal, setMsgModal] = useState('');
+    const [okModal, setOkModal] = useState(null);
     const [modal, setModal] = useState(false);
 
-    const geraLink = (producer) => {
+    const geraLink = (manager) => {
         return (
             <div class="btn-group btn-group" role="group">
-                <a href={"/detalhes-producer/"+producer.id} class="btn btn-sm btn-outline-success m-2">Detalhes</a>
-                <a href={`${api.BASE.API}/producers/${producer.id}/pdf/1`} target="_new" class="btn btn-sm btn-outline-info m-2">PDF</a>
-                <a href={"/cadastro-producer/"+producer.id} class="btn btn-sm btn-outline-warning m-2">Editar</a>
-                <button class="btn btn-outline-danger btn-sm m-2" onClick={(id) => deleteConfirm(producer.id, id)}>Excluir</button>
+                <a href={"/detalhes-Manager/"+manager.id} class="btn btn-sm btn-outline-success m-2">Detalhes</a>
+                <a href={"/cadastro-manager/"+manager.id} class="btn btn-sm btn-outline-warning m-2">Editar</a>
+                <button class="btn btn-outline-danger btn-sm m-2" onClick={(id) => deleteConfirm(manager.id, id)}>Excluir</button>
             </div>
         )
     }
 
-    const getProducers = async () => {
-        const request = await api.getAllProducers();
+    const getManagers = async () => {
+        const request = await api.getAllManagers();
         
         const response = await request.json();
         response.map(function (p) {
-            p.links=geraLink(p)
+            p.links=geraLink(p);
+            p.perfil= p.role === 0 ? 'Administrador' : 'Técnico';
         })
-        setProducers(response);
+        setManagers(response);
     }
 
     const deleteConfirm = (id) => {
         setKey(id)
         setMsgModal('Tem certeza que deseja excluir o Produtor?');
+        setOkModal(deleteManager)
         setModalConfirm(true);
     }
 
-    const deleteProducer = async () => {
+    const deleteManager = async () => {
         setModalConfirm(false);
-
-        const request = await fetch('https://apiproducers.serviceapp.net.br/api/producers/'+key, {
-            method: 'DELETE'
-        })
+        const request = await api.deleteManager(key);
+        const response = await request.json()
         if(request.status == 200){
             setMsgModal('Produtor excluido com sucesso.');
         } else {
             setMsgModal('Erro '+request.status);
         }
         setModal(true);
-        getProducers();
+        getManagers();
     }
 
     useEffect(() => {
-        getProducers();
+        getManagers();
     }, [])
     
     return(
@@ -97,13 +96,13 @@ function ListaProducers(params) {
                     <p>{msgModal}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={deleteProducer}>Excluir</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={okModal}>Excluir</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={() => {setModalConfirm(false)}}>Cancelar</button>
                 </div>
             </Modal>
             <nav class="navbar" style={{marginTop: 10, backgroundColor: 'lightgray'}}>
                 <div class="container-fluid" style={{alignItems: 'center', justifyContent: 'space-around'}}>
-                    <h3>Lista dos Produtores</h3>
+                    <h3>Lista dos Usuários</h3>
                 </div>
             </nav>
             <div className="container">
@@ -115,10 +114,11 @@ function ListaProducers(params) {
                                 <FilterableTable
                                     namespace="People"
                                     initialSort="name"
-                                    data={producers}
+                                    data={managers}
                                     fields={
                                         [
                                             { name: 'name', displayName: "Nome", inputFilterable: true, sortable: true },
+                                            { name: 'perfil', displayName: "Perfil", inputFilterable: true, sortable: true },
                                             { name: 'cpf', displayName: "CPF", inputFilterable: true, exactFilterable: true, sortable: true },
                                             { name: 'email', displayName: "E-mail", inputFilterable: true, exactFilterable: true, sortable: true },
                                             { name: 'phone', displayName: "Telefone", inputFilterable: true, exactFilterable: true, sortable: true },
@@ -137,4 +137,4 @@ function ListaProducers(params) {
     );
 }
 
-export default ListaProducers;
+export default ListaManagers;

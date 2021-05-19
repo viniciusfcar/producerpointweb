@@ -32,8 +32,11 @@ const Navbar = () => {
                             </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="/cadastro-activity">Atividade</a></li>
-                                    <li><a class="dropdown-item" href="/cadastro-producer">Produtor</a></li>
                                     <li><a class="dropdown-item" href="/cadastro-product">Produto</a></li>
+                                    <li><a class="dropdown-item" href="/cadastro-producer">Produtor</a></li>
+                                    {user?.role != 0 ? "" :
+                                    <li><a class="dropdown-item" href="/cadastro-manager">Usuário</a></li>
+                                    }
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">
@@ -42,8 +45,11 @@ const Navbar = () => {
                             </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="/lista-activities">Atividade</a></li>
-                                    <li><a class="dropdown-item" href="/lista-producers">Produtores</a></li>
                                     <li><a class="dropdown-item" href="/lista-products">Produtos</a></li>
+                                    <li><a class="dropdown-item" href="/lista-producers">Produtores</a></li>
+                                    {user?.role != 0 ? "" :
+                                    <li><a class="dropdown-item" href="/lista-managers">Usuários</a></li>
+                                    }
                                 </ul>
                             </li>
                             <a onClick={handleLogout} class="nav-link" href="#" tabindex="-1" aria-disabled="true">Sair</a>
