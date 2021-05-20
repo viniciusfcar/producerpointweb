@@ -309,4 +309,26 @@ export default {
         }
     },
 
+    // PASSWORD RECOVERY
+
+    sendEmal: async (email) => {
+        try {
+            const headers = new Headers();
+            headers.append("Content-Type", "application/x-www-form-urlencoded")
+
+            const formData = new URLSearchParams();
+            formData.append('email', email);
+
+            const request = await fetch(`${BASE.API}/recovery/`, {
+                method: 'POST',
+                headers: headers,
+                body: formData.toString()
+            })
+            console.log(request?.status)
+            return request
+        } catch (e) {
+            console.log('Erro: sendEmail ' + e)
+        }
+    },
+
 }
