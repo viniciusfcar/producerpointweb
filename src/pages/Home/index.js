@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../../components/Context/AuthContext.js';
 import Navbar from '../../components/NavBar/Navbar.js';
 
-import './Home.css';
+import './style.css';
 
 function Home() {
 

@@ -4,8 +4,8 @@ import { Switch } from 'react-router-dom'
 import RouteHandler from '../components/RouteHandler'
 
 import SignIn from '../pages/SignIn'
+import Home from '../pages/Home'
 
-import Home from '../pages/Home/Home'
 import CadastroProducer from '../pages/CadastroProducer/CadastroProducer'
 import CadastroProduct from '../pages/CadastroProuct/CadastroProduct';
 import CadastroActivity from '../pages/CadastroActivity/CadastroActivity';
@@ -24,6 +24,10 @@ const Routes = () => {
     return (
         <Switch>
             <RouteHandler exact path='/'>
+                <SignIn />
+            </RouteHandler>
+
+            <RouteHandler exact path="/recovery/:mail/:time/:token">
                 <SignIn />
             </RouteHandler>
 

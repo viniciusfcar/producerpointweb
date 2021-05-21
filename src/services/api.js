@@ -311,7 +311,7 @@ export default {
 
     // PASSWORD RECOVERY
 
-    sendEmal: async (email) => {
+    sendEmalRecovery: async (email) => {
         try {
             const headers = new Headers();
             headers.append("Content-Type", "application/x-www-form-urlencoded")
@@ -323,11 +323,50 @@ export default {
                 method: 'POST',
                 headers: headers,
                 body: formData.toString()
-            })
+            });
             console.log(request?.status)
             return request
         } catch (e) {
-            console.log('Erro: sendEmail ' + e)
+            console.log('Erro: sendEmailRecovery ' + e)
+        }
+    },
+
+    validateLink: async (mail, time, token) => {
+        try {
+            const request = await fetch(`${BASE.API}/recovery/${mail}/${time}/${token}`);
+            console.log(request?.status)
+            return request
+        } catch (e) {
+            console.log('Erro: validateLink ' + e)
+        }
+    },
+
+    setNewPassword: async (email, time, token, newPassword) => {
+        try {
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json")
+            headers.append("Accept", 'application/json')
+
+            const formData = new URLSearchParams();
+            formData.append('email', email);
+            formData.append('time', time);
+            formData.append('token', token);
+            formData.append('newPassword', newPassword);
+
+            const request = await fetch(`${BASE.API}/recovery/`, {
+                method: 'PUT',
+                headers: headers,
+                body: JSON.stringify({
+                    email : email,
+                    time : time,
+                    token : token,
+                    newPassword, newPassword
+                })
+            });
+            console.log(request?.status)
+            return request
+        } catch (e) {
+            console.log('Erro: setNewPassword ' + e)
         }
     },
 
