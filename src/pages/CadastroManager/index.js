@@ -28,7 +28,7 @@ function CadastroManager() {
     const [modalConfirm, setModalConfirm] = useState(false);
     const [modal, setModal] = useState(false);
     const [okModal, setOkModal] = useState(null);
-    const [msgModal, setMsgModal] = useState('');
+    const [msgModal, setMsgModal] = useState([]);
     const [newRole, setNewRole] = useState(null);
 
     // Manager
@@ -59,6 +59,19 @@ function CadastroManager() {
 
     }
 
+    const getManagerByEmail = async (email) => {
+        let request = await api.getManagerByEmail(email);
+        if(request?.status === 200){
+            let response = await request.json();
+            if(response.id != mid) {
+                return false
+            }
+            console.log(mid, response.id);
+        }
+        
+        return true;
+    }
+
     useEffect(() => {
         if (id > 0) {
             getManager(id);
@@ -67,15 +80,19 @@ function CadastroManager() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if(name=='' || nickname =='' || birthDate=='' || phone=='' || 
-        await CPF.validaCPF(cpf)==false || email=='' ){
-            let mess;
-            if(await CPF.validaCPF(cpf)==false){
-                mess = 'O CFP digitado é inválido!';
-            } else {
-                mess = 'Preencha todos os campos marcaods com *.';
+        let validaCPF = await CPF.validaCPF(cpf);
+        let validaEmail = await getManagerByEmail(email);
+        if(name=='' || nickname =='' || birthDate=='' || phone==''
+        || email=='' || validaCPF === false  || validaEmail == false  ){
+            let mess = [];
+            await mess.push('Preencha todos os campos marcaods com *.');
+            if (await validaEmail === false){
+                await mess.push('O e-mail informado já existe para outro usuário!');
             }
-            setMsgModal(mess);
+            if(await CPF.validaCPF(cpf)===false){
+                await mess.push('O CFP digitado é inválido!!');
+            } 
+            await setMsgModal(mess);
         } else {
             setBirthDate(Date.parse(birthDate));
 
@@ -85,10 +102,10 @@ function CadastroManager() {
     
             if(request != null && request.status >= 200 && request.status <= 205) {
                 const response = await request.json();
-                setMsgModal('Usuário gravado com sucesso.');
+                setMsgModal(['Usuário gravado com sucesso.']);
                 setId(await response.id);
             } else {
-                setMsgModal('Erro inesperado, tente novamente ou contate o suporte. Status = '+request?.status);
+                setMsgModal(['Erro inesperado, tente novamente ou contate o suporte. Status = '+request?.status]);
             }
         }
         setModal(true);
@@ -101,7 +118,7 @@ function CadastroManager() {
     const confirmPerfil = (perfil) => {
         const perfis = ['Administrador', 'Técnico']
         if(perfil != role) {
-            setMsgModal(`Tem certeza que deseja alterar o perfil deste usuário para ${perfis[perfil]}?`);
+            setMsgModal([`Tem certeza que deseja alterar o perfil deste usuário para ${perfis[perfil]}?`]);
             setNewRole(perfil);
             setModalConfirm(true);
         }
@@ -120,7 +137,7 @@ function CadastroManager() {
                 style={customStyles}
             >
                 <div class="modal-body">
-                    <p>{msgModal}</p>
+                    <p>{msgModal?.map(m =><p>{m}</p>)}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={closeModal}>Fechar</button>
@@ -131,7 +148,7 @@ function CadastroManager() {
                 style={customStyles}
             >
                 <div class="modal-body">
-                    <p>{msgModal}</p>
+                    <p>{msgModal?.map(m =><p>{m}</p>)}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={changePerfil}>Alterar</button>

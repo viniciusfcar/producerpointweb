@@ -128,6 +128,20 @@ export default {
         }
     },
 
+    getManagerByEmail: async (email) => {
+        try {
+            const request = await fetch(`${BASE.API}/managers/findByEmail/${email}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            return request;
+        } catch (e) {
+            console.log('Erro: getManagerByEmail ' + e)
+        }
+    },
+
+
+
     // UPDATE
 
     updateProducer: async (

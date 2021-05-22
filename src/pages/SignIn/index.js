@@ -89,7 +89,6 @@ const SignIn = () => {
         
     }
 
-
     return (
         <Area>
             <Modal // Envio de e-mail de recuperaão de senha
