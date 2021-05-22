@@ -208,7 +208,7 @@ function CadastroProducer() {
                     </div>
                     <div class="col-md-4">
                         <label for="phone" class="form-label">Telefone*</label>
-                        <input type="text" class="form-control" id="phone" onChange={function (event) { setPhone(event.target.value) }} value={phone} />
+                        <input type="text" class="form-control" id="phone" onChange={async function (event) { await setPhone(await CPF.phoneMask(event.target.value)) }} value={phone} />
                     </div>
                     <div class="col-md-4">
                         <label for="cpf" class="form-label">CPF*</label>

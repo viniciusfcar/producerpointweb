@@ -28,6 +28,14 @@ export default {
       .replace(/(\d{3})(\d)/, '$1.$2')
       .replace(/(\d{3})(\d{1,2})/, '$1-$2')
       .replace(/(-\d{2})\d+?$/, '$1') // captura 2 numeros seguidos de um traço e não deixa ser digitado mais nada
-  }
+  },
+
+  phoneMask : async phone => {
+      return phone
+      .replace(/\D/g, '') // substitui qualquer caracter que nao seja numero por nada
+      .replace(/(\d{2})(\d)/, '($1)$2') // captura 1 grupos de numero o primeiro de 2 e o segundo de 1, e adiciona parenteses
+      .replace(/(\d{5})(\d)/, '$1-$2') // captura 2 grupos de numero o primeiro de 5 e o segundo de 1, e adiciona um traço
+      .replace(/(-\d{4})\d+?$/, '$1') // captura 4 numeros seguidos de um traço e não deixa ser digitado mais nada
+    }
 
 };
