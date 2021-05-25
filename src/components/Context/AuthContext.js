@@ -34,12 +34,11 @@ const AuthProvider = ({ children }) => {
                     window.location.href = '/home'
                     return
                 } else {
-                    alert('Deu ruim!')
-                    return
+                    return { statu : response.status, message : `Login inválido!`}
                 }
             }
             catch (erro) {
-                alert('Error: ' + erro)
+                return { statu : response.status, message : `Erro de conexão ${response.status}`}
             }
         }
     }

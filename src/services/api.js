@@ -140,6 +140,41 @@ export default {
         }
     },
 
+    getManagerByCpf: async (cpf) => {
+        try {
+            const request = await fetch(`${BASE.API}/managers/findByCpf/${cpf}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            return request;
+        } catch (e) {
+            console.log('Erro: getManagerByEmail ' + e)
+        }
+    },
+
+    getActivityByName: async (name) => {
+        try {
+            const request = await fetch(`${BASE.API}/activities/findByName/${name}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            return request;
+        } catch (e) {
+            console.log('Erro: getActivityByname ' + e)
+        }
+    },
+
+    getProductByName: async (name) => {
+        try {
+            const request = await fetch(`${BASE.API}/products/findByName/${name}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            return request;
+        } catch (e) {
+            console.log('Erro: getProductByName ' + e)
+        }
+    },
 
 
     // UPDATE

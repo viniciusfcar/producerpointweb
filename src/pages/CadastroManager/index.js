@@ -72,6 +72,18 @@ function CadastroManager() {
         return true;
     }
 
+    const getManagerByCpf = async (cpf) => {
+        let request = await api.getManagerByCpf(cpf);
+        if(request?.status === 200){
+            let response = await request.json();
+            if(response.id != mid) {
+                return false
+            }
+            console.log(mid, response.id);
+        }
+        return true;
+    }
+
     useEffect(() => {
         if (id > 0) {
             getManager(id);
@@ -81,18 +93,22 @@ function CadastroManager() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         let validaCPF = await CPF.validaCPF(cpf);
-        let validaEmail = await getManagerByEmail(email);
+        let checkEmail = await getManagerByEmail(email);
+        let checkCPF = await getManagerByCpf(cpf);
         if(name=='' || nickname =='' || birthDate=='' || phone==''
-        || email=='' || validaCPF === false  || validaEmail == false  ){
+        || email=='' || validaCPF === false  || checkEmail == false  || checkCPF == false  ){
             let mess = [];
-            await mess.push('Preencha todos os campos marcaods com *.');
-            if (await validaEmail === false){
-                await mess.push('O e-mail informado já existe para outro usuário!');
+            mess.push('Preencha todos os campos marcaods com *.');
+            if (checkEmail === false){
+                mess.push('O e-mail informado já existe para outro usuário!');
             }
-            if(await CPF.validaCPF(cpf)===false){
-                await mess.push('O CFP digitado é inválido!!');
+            if(validaCPF===false){
+                mess.push('O CFP digitado é inválido!!');
             } 
-            await setMsgModal(mess);
+            if(checkEmail===false){
+                mess.push('O CPF informado já existe para outro usuário!');
+            } 
+            setMsgModal(mess);
         } else {
             setBirthDate(Date.parse(birthDate));
 

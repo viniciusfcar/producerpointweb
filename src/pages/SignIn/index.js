@@ -47,7 +47,10 @@ const SignIn = () => {
         setDisabled(true)
         setError('')
 
-        await signIn(email.trim(), password.trim())
+        const loign = await signIn(email.trim(), password.trim());
+        if( loign.status !== 200 ){
+            setError(loign.message);
+        }
 
         setDisabled(false)
     }

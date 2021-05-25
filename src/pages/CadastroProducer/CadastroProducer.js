@@ -119,9 +119,9 @@ function CadastroProducer() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if(name=='' || nickname =='' || birthDate=='' || phone=='' || await CPF.validaCPF(cpf)==false ||
-        email=='' || houseNumber=='' || zipCode=='' || city=='' || 
-        district=='' || uf=='' || street=='' || activity=='' || period=='' ){
+        if(name=='' || nickname =='' || birthDate=='' || phone=='' || await CPF.validaCPF(cpf)==false 
+        || houseNumber=='' || zipCode=='' || city=='' || district==''
+        || uf=='' || street=='' || activity=='' || period=='' ){
             let mess;
             if(await CPF.validaCPF(cpf)==false){
                 mess = 'O CFP digitado é inválido!';
